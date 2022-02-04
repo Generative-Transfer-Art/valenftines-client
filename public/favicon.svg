@@ -1,0 +1,55 @@
+<svg width="118" height="110" viewBox="0 0 118 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    svg {
+      max-width: 100px;
+    }
+
+    #heart {
+      display: block;
+      fill: hsla(270, 100%, 85%, 1);
+      animation: 800ms linear infinite beat, 1200ms ease-in-out infinite alternate rainbow;
+      transform-origin: 50% 50%;
+    }
+
+    @keyframes rainbow {
+      0% {
+        fill: hsla(54, 100%, 84%, 1);
+      }
+      25% {
+        fill: hsla(145, 100%, 82%, 1);
+      }
+      50% {
+        fill: hsla(199, 100%, 82%, 1);
+      }
+      75% {
+        fill: hsla(270, 100%, 85%, 1);
+      }
+      100% {
+        fill: hsla(54, 100%, 84%, 1);
+      }
+    }
+
+    @keyframes beat {
+      0% {
+        transform: scale(0.95);
+      }
+      20% {
+        transform: scale(1);
+      }
+      30% {
+        transform: scale(0.90);
+      }
+      40% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(0.95);
+      }
+      100% {
+        transform: scale(0.95);
+      }
+    }
+  </style>
+  <path id="heart" d="M116.962 23.3298C111.149 -2.39425 81.7959 -7.05173 63.102 10.3841C61.2983 12.0665 58.4364 11.9289 56.7204 10.1496C38.5964 -8.64328 2.17809 -0.709588 1.00098 30.6052C-0.508371 70.7585 49.1325 110.28 60.5365 109.146C71.9405 108.011 125.786 62.3733 116.962 23.3298Z" />
+</svg>
+  

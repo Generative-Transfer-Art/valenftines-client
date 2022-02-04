@@ -1,0 +1,13 @@
+.wrapper {
+  align-items: center;
+  background: hsla(0, 100%, 93%, 1);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.innerWrapper {
+  overflow: hidden;
+  user-select: none;
+  white-space: nowrap;
+}
