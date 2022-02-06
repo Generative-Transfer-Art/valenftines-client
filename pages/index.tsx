@@ -1,10 +1,11 @@
 import Heart from 'components/Heart'
 import type { NextPage } from 'next'
+import { ComponentType } from 'react'
 
 import Layout from '../components/Layout'
 import styles from '../styles/Home.module.scss'
 
-const HEART_MATRIX = new Array(6).fill(new Array(12).fill(<Heart />))
+const HEART_MATRIX: ComponentType[][] = new Array(6).fill(new Array(12).fill(Heart))
 
 const Home: NextPage = () => {
   return (
@@ -13,7 +14,9 @@ const Home: NextPage = () => {
         <div className={styles.innerWrapper}>
           {HEART_MATRIX.map((heartArray, i) => (
             <div key={`heart-row-${i}`} className={styles.heartRow}>
-              {heartArray}
+              {heartArray.map((El, j) => (
+                <El key={`heart-${i}-${j}`} />
+              ))}
             </div>
           ))}
         </div>
