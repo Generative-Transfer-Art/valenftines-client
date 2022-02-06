@@ -1,13 +1,60 @@
+@use "sass:math"as math;
+
 .wrapper {
   align-items: center;
   background: hsla(0, 100%, 93%, 1);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   min-height: 100vh;
+  overflow: hidden;
+}
+
+.connectWallet {
+  align-items: center;
+  background: var(--hot-pink);
+  border-radius: 16px;
+  border: none;
+  color: var(--white);
+  display: flex;
+  flex-direction: row;
+  font-family: Courier New, monospace;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: bold;
+  height: 60px;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  line-height: 24px;
+  margin: 40px auto;
+  outline: none;
+  padding: 18px 20px;
+  text-align: center;
+  width: 320px;
 }
 
 .innerWrapper {
+  margin-top: 32px;
   overflow: hidden;
   user-select: none;
   white-space: nowrap;
+}
+
+
+$offset: 69px;
+
+.heartRow:nth-of-type(2) {
+  transform: translateX($offset * -1);
+}
+
+
+.heartRow:nth-of-type(4) {
+  transform: translateX($offset * -3);
+}
+
+.titleRow {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
