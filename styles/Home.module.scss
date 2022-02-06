@@ -16,6 +16,7 @@
   border-radius: 16px;
   border: none;
   color: var(--white);
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   font-family: Courier New, monospace;
@@ -43,13 +44,13 @@
 
 $offset: 69px;
 
-.heartRow:nth-of-type(2) {
+.heartRow:nth-of-type(1) {
   transform: translateX($offset * -1);
 }
 
 
-.heartRow:nth-of-type(4) {
-  transform: translateX($offset * -3);
+.heartRow:nth-of-type(3) {
+  transform: translateX($offset * -2);
 }
 
 .titleRow {

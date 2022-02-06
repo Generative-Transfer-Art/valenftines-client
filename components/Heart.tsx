@@ -86,10 +86,10 @@ export function Wagmi() {
   )
 }
 
-export function BullishYou() {
+export function Bullish4You() {
   return (
     <BaseHeart>
-      <TwoLineText line1="BULLISH" line2="YOU" />
+      <TwoLineText line1="BULLISH" line2="4YOU" />
     </BaseHeart>
   )
 }
@@ -190,6 +190,14 @@ export function LilMfer() {
   )
 }
 
+export function CallMe() {
+  return (
+    <BaseHeart>
+      <TwoLineText line1="CALL" line2="ME" />
+    </BaseHeart>
+  )
+}
+
 export function OnboardMe() {
   return (
     <BaseHeart>
@@ -250,9 +258,10 @@ export const BACKGROUND_HEARTS = [
   Gm,
   ZeroXZeroX,
   Wagmi,
-  BullishYou,
+  Bullish4You,
   BeMine,
   ToTheMoon,
+  CallMe,
   CoolCat,
   CutiePie,
   BestFren,
