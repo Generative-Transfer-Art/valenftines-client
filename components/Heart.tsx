@@ -10,12 +10,13 @@ interface BaseHeartProps {
 
 const TEXT_STYLE = {
   fontSize: '30px',
-  fontFamily: 'Courier New, monospace',
+  fontFamily: 'monospace',
   fontWeight: 600,
-  letterSpacing: 'px',
+  letterSpacing: '1px',
 }
 
 function BaseHeart({ children, color = theme.white, fill = theme.black }: PropsWithChildren<BaseHeartProps>) {
+  const svgClasses = [styles.heart, styles.baseHeart].join(' ')
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +24,7 @@ function BaseHeart({ children, color = theme.white, fill = theme.black }: PropsW
       y="0px"
       viewBox="0 0 162 162"
       xmlSpace="preserve"
-      className={styles.heart}
+      className={svgClasses}
     >
       <g transform="translate(81,81)">
         <path
@@ -255,32 +256,31 @@ export function IdMintYou() {
 }
 
 export const BACKGROUND_HEARTS = [
-  Gm,
-  ZeroXZeroX,
-  Wagmi,
-  Bullish4You,
-  BeMine,
-  ToTheMoon,
-  CallMe,
-  CoolCat,
-  CutiePie,
-  BestFren,
-  BigFan,
-  CoinBae,
-  SayIDAO,
-  MyDegen,
-  PayMyTaxes,
-  UpOnly,
-  LilMfer,
-  OnboardMe,
-  LetsMerge,
-  HodlMe,
-  LooksRare,
-  WenRing,
-  SimpForYou,
-  IdMintYou,
+  <Gm key="Gm" />,
+  <ZeroXZeroX key="ZeroXZeroX" />,
+  <Wagmi key="Wagmi" />,
+  <Bullish4You key="Bullish4You" />,
+  <BeMine key="BeMine" />,
+  <ToTheMoon key="ToTheMoon" />,
+  <CallMe key="CallMe" />,
+  <CoolCat key="CoolCat" />,
+  <CutiePie key="CutiePie" />,
+  <BestFren key="BestFren" />,
+  <BigFan key="BigFan" />,
+  <CoinBae key="CoinBae" />,
+  <SayIDAO key="SayIDAO" />,
+  <MyDegen key="MyDegen" />,
+  <PayMyTaxes key="PayMyTaxes" />,
+  <UpOnly key="UpOnly" />,
+  <LilMfer key="LilMfer" />,
+  <OnboardMe key="OnboardMe" />,
+  <LetsMerge key="LetsMerge" />,
+  <HodlMe key="HodlMe" />,
+  <LooksRare key="LooksRare" />,
+  <WenRing key="WenRing" />,
+  <SimpForYou key="SimpForYou" />,
+  <IdMintYou key="IdMintYou" />,
 ]
-
 interface OneLineTextProps {
   line1: string
 }
