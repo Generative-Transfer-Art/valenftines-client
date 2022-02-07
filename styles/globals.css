@@ -25,6 +25,7 @@ body {
   margin: 0;
   color: black;
   font-family: monospace;
+  letter-spacing: 1px;
 }
 
 a {

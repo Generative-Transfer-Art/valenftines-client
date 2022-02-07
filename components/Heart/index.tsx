@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import theme from 'styles/theme'
 
-import styles from '../styles/Heart.module.scss'
+import styles from './Heart.module.scss'
 
 interface BaseHeartProps {
   color?: string

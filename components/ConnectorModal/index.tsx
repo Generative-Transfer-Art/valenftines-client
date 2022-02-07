@@ -2,7 +2,8 @@ import { metaMask } from 'connectors/metaMask'
 import { walletConnect } from 'connectors/walletConnect'
 import Image from 'next/image'
 import { useCallback } from 'react'
-import styles from 'styles/ConnectorModal.module.scss'
+
+import styles from './ConnectorModal.module.scss'
 
 interface ConnectorModalProps {
   close: () => void

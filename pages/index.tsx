@@ -86,7 +86,7 @@ const Home: NextPage = () => {
           <div className={styles.heartRow}>{ROW_3}</div>
         </div>
         <div className={styles.controlRow}>
-          <ConnectButton>CONNECT WALLET</ConnectButton>
+          <ConnectButton />
         </div>
         <div className={styles.innerWrapper}>
           <div className={styles.heartRow}>{ROW_4}</div>

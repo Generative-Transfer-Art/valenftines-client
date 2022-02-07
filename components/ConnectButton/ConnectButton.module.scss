@@ -19,5 +19,15 @@
   outline: none;
   padding: 18px 20px;
   text-align: center;
+  transition: 200ms ease all;
   width: 320px;
+
+  &:hover,
+  &:focus {
+    background-color: transparent;
+    border: 1px solid var(--hot-pink);
+    box-shadow: rgba(47 128 237 / 0.15) 0px 4px 8px 0px;
+    color: var(--hot-pink);
+    outline: none;
+  }
 }
