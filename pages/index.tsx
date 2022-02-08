@@ -77,7 +77,7 @@ const ConnectButton = dynamic(() => import('components/ConnectButton'), { ssr: f
 
 const Home: NextPage = () => {
   return (
-    <Layout>
+    <Layout mainClass={styles.main}>
       <div className={styles.wrapper}>
         <div className={styles.innerWrapper}>
           <div className={styles.heartRow}>{ROW_1}</div>

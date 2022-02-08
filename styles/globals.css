@@ -1,12 +1,14 @@
 :root {
-  --orange: #ffcc99;
   --blue: #a2e2ff;
   --green: #a4ffca;
+  --hot-pink: #fa0f95;
+  --light-pink: #ffdbdb;
+  --orange: #ffcc99;
+  --pink-shadow: 0px 0px 30px 5px rgba(250, 15, 149, 0.2);
   --pink: #ffc9df;
   --purple: #dab5ff;
-  --yellow: #fff6ae;
   --white: #ffffff;
-  --hot-pink: #fa0f95;
+  --yellow: #fff6ae;
   --rainbow: radial-gradient(
     142.75% 65.98% at 50% 50%,
     #ffb9b9 0%,
@@ -15,17 +17,15 @@
     #cfbcff 77.08%,
     #ffb9b9 100%
   );
-
-  --pink-shadow: 0px 0px 30px 5px rgba(250, 15, 149, 0.2);
 }
 
 html,
 body {
-  padding: 0;
-  margin: 0;
   color: black;
   font-family: monospace;
   letter-spacing: 1px;
+  margin: 0;
+  padding: 0;
 }
 
 a {

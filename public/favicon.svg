@@ -7,7 +7,7 @@
     #heart {
       display: block;
       fill: hsla(270, 100%, 85%, 1);
-      animation: 800ms linear infinite beat, 1200ms ease-in-out infinite alternate rainbow;
+      animation: 1s linear infinite beat, 6s ease-in-out infinite alternate rainbow;
       transform-origin: 50% 50%;
     }
 

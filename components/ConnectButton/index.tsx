@@ -2,8 +2,8 @@ import usePriorityConnectorHooks from 'hooks/usePriorityConnectorHooks'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 
-import styles from '../ConnectButton.module.scss'
 import ConnectorModal from '../ConnectorModal'
+import styles from './ConnectButton.module.scss'
 
 export default function ConnectButton() {
   const [open, setOpen] = useState(false)

@@ -3,3 +3,17 @@
   width: 116px;
   margin: 0 11px;
 }
+
+.float {
+  animation: 1500ms ease-in-out infinite alternate float;
+}
+
+@keyframes float {
+  from {
+    transform: translateY(0.2em);
+  }
+
+  to {
+    transform: translateY(-0.2em);
+  }
+}

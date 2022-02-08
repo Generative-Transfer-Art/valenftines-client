@@ -14,7 +14,7 @@ export default function Mint() {
   const [msg3, setMsg3] = useState<string>('')
   const readyToMint = useMemo(() => recipient && msg1 && msg2 && msg3, [recipient, msg1, msg2, msg3])
   return (
-    <Layout>
+    <Layout mainClass={styles.main}>
       {addressGetterOpen && <SendTo close={() => setAddressGetterOpen(false)} saveAddress={setRecipient} />}
       <div className={styles.wrapper}>
         <p>

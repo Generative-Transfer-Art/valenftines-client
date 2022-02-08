@@ -1,7 +1,13 @@
 import Head from 'next/head'
 import { PropsWithChildren } from 'react'
 
-export default function Layout({ children }: PropsWithChildren<Record<string, unknown>>) {
+import styles from './Layout.module.scss'
+
+interface LayoutProps {
+  mainClass?: string
+}
+
+export default function Layout({ children, mainClass }: PropsWithChildren<LayoutProps>) {
   return (
     <>
       <Head>
@@ -9,7 +15,7 @@ export default function Layout({ children }: PropsWithChildren<Record<string, un
         <meta name="description" content="A transfer art project" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <main>{children}</main>
+      <main className={`${styles.wrapper} ${mainClass}`}>{children}</main>
     </>
   )
 }

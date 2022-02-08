@@ -4,6 +4,7 @@ import theme from 'styles/theme'
 import styles from './Heart.module.scss'
 
 interface BaseHeartProps {
+  classes?: string[]
   color?: string
   fill?: string
 }
@@ -15,8 +16,11 @@ const TEXT_STYLE = {
   letterSpacing: '1px',
 }
 
-function BaseHeart({ children, color = theme.white, fill = theme.black }: PropsWithChildren<BaseHeartProps>) {
-  const svgClasses = [styles.heart, styles.baseHeart].join(' ')
+function BaseHeart({ classes, children, color = theme.white, fill = theme.black }: PropsWithChildren<BaseHeartProps>) {
+  let svgClasses = [styles.heart, styles.baseHeart]
+  if (classes) {
+    svgClasses = [...svgClasses, ...classes]
+  }
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +28,7 @@ function BaseHeart({ children, color = theme.white, fill = theme.black }: PropsW
       y="0px"
       viewBox="0 0 162 162"
       xmlSpace="preserve"
-      className={svgClasses}
+      className={svgClasses.join(' ')}
     >
       <g transform="translate(81,81)">
         <path
@@ -41,7 +45,7 @@ function BaseHeart({ children, color = theme.white, fill = theme.black }: PropsW
 
 export function ForFriendsAndLovers() {
   return (
-    <BaseHeart fill={theme.purple} color={theme.hotPink}>
+    <BaseHeart fill={theme.purple} color={theme.hotPink} classes={[styles.float]}>
       <TwoLineText line1="4FRENS" line2="&LVRS" />
     </BaseHeart>
   )
@@ -49,7 +53,7 @@ export function ForFriendsAndLovers() {
 
 export function ValeNFTines() {
   return (
-    <BaseHeart fill={theme.yellow} color={theme.hotPink}>
+    <BaseHeart fill={theme.yellow} color={theme.hotPink} classes={[styles.float]}>
       <ThreeLineText line1="VALE" line2="NFT" line3="INES" />
     </BaseHeart>
   )
@@ -57,7 +61,7 @@ export function ValeNFTines() {
 
 export function Feb14Only() {
   return (
-    <BaseHeart fill={theme.blue} color={theme.hotPink}>
+    <BaseHeart fill={theme.blue} color={theme.hotPink} classes={[styles.float]}>
       <TwoLineText line1="FEB14" line2="ONLY" />
     </BaseHeart>
   )
