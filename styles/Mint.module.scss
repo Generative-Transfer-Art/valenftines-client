@@ -30,7 +30,6 @@
   background-color: var(--hot-pink);
   border: 1px solid transparent;
   border-radius: 16px;
-  border: none;
   color: var(--white);
   cursor: pointer;
   display: flex;
@@ -59,7 +58,11 @@
 
   &:disabled {
     background-color: hsla(326 96% 52% / 0.15);
+    color: var(--white);
     cursor: not-allowed;
+    border: 1px solid transparent;
+    box-shadow: unset;
+    outline: none;
   }
 }
 

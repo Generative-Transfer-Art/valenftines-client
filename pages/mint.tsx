@@ -1,11 +1,10 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Provider } from '@ethersproject/providers'
+import { parseEther } from '@ethersproject/units'
 import { Network } from '@web3-react/network'
-import { Valenftines } from 'abis/types/Valenftines'
+import { Valenftines } from 'abis/types'
 import ValenftinesAbi from 'abis/Valenftines.json'
 import Layout from 'components/Layout'
 import SendTo from 'components/SendTo'
-import { Contract } from 'ethers'
+import { useContract } from 'hooks/useContract'
 import { useOnlySupportedNetworks } from 'hooks/useOnlySupportedNetworks'
 import usePriorityConnectorHooks from 'hooks/usePriorityConnectorHooks'
 import Link from 'next/link'
@@ -24,28 +23,32 @@ enum PAGE_STATE {
 export default function Mint() {
   useOnlySupportedNetworks()
   const [addressGetterOpen, setAddressGetterOpen] = useState(false)
-  const [pageState, setPageState] = useState(PAGE_STATE.COMPLETE)
+  const [pageState, setPageState] = useState(PAGE_STATE.READY)
   const [txHash, setTxHash] = useState<string | null>(null)
-  const [mintEthPrice, setMintEthPrice] = useState<BigNumber>(BigNumber.from(0))
+  const [mintEthPrice, setMintEthPrice] = useState<string>('1')
   const [recipient, setRecipient] = useState<string>('')
   const [id1, setId1] = useState<number | null>(1)
-  const [id2, setId2] = useState<number | null>(1)
-  const [id3, setId3] = useState<number | null>(1)
+  const [id2, setId2] = useState<number | null>(2)
+  const [id3, setId3] = useState<number | null>(3)
+
+  console.log(setId1, setId2, setId3, setMintEthPrice)
   const hooks = usePriorityConnectorHooks()
   const connector = hooks.usePriorityConnector()
   const chainId = hooks.usePriorityChainId()
   const readyToMint = useMemo(() => chainId && recipient && id1 && id2 && id3, [chainId, recipient, id1, id2, id3])
 
+  const valeNFTinesContract = useContract<Valenftines>(
+    VALENFTINES_ADDRESS[chainId as SupportedChainId],
+    JSON.stringify(ValenftinesAbi)
+  )
+
   const mint = useCallback(async () => {
-    if (chainId && recipient && !(connector instanceof Network) && id1 && id2 && id3) {
-      const ValenftinesContract = new Contract(
-        VALENFTINES_ADDRESS[chainId as SupportedChainId],
-        ValenftinesAbi.toString(),
-        connector.provider as unknown as Provider
-      ) as Valenftines
+    if (chainId && recipient && !(connector instanceof Network) && id1 && id2 && id3 && valeNFTinesContract) {
       try {
         setPageState(PAGE_STATE.PENDING)
-        const transaction = await ValenftinesContract.mint(recipient, id1, id2, id3)
+        const transaction = await valeNFTinesContract.mint(recipient, id1, id2, id3, {
+          value: parseEther(mintEthPrice),
+        })
         setTxHash(transaction.hash)
         const receipt = await transaction.wait(1)
         console.log('success!', receipt)
@@ -55,9 +58,8 @@ export default function Mint() {
         setPageState(PAGE_STATE.COMPLETE)
         setTxHash(null)
       }
-      // todo: view on opensea?
     }
-  }, [chainId, connector, id1, id2, id3, recipient])
+  }, [chainId, connector, id1, id2, id3, mintEthPrice, recipient, valeNFTinesContract])
 
   const sendAnother = useCallback(() => {
     setPageState(PAGE_STATE.READY)
