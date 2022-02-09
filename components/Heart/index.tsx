@@ -338,14 +338,14 @@ export function SelectMessageHeart() {
 }
 
 export function SendToHeart() {
-  return <div className='heart'> { SVGImage(heartSvgs.sendToHeartSVG) } </div>
+  return <div className="heart"> {SVGImage(heartSvgs.sendToHeartSVG)} </div>
 }
 
 interface AddressHeartProps {
   address: string
 }
 
-export function AddressHeart({address} : AddressHeartProps) {
+export function AddressHeart({ address }: AddressHeartProps) {
   return SVGImage(heartSvgs.addrHeartSVG(address))
 }
 
@@ -353,7 +353,7 @@ interface TextHeartProps {
   heartType: number
 }
 
-export function TextHeart({heartType} : TextHeartProps) {
+export function TextHeart({ heartType }: TextHeartProps) {
   return SVGImage(heartSvgs.getTextHeartSVG(heartType))
 }
 
