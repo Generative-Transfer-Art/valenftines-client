@@ -90,8 +90,8 @@ export default function Mint() {
         <SelectMessageHeart />
         <SelectMessageHeart />
         <SelectMessageHeart />
-        <AddressHeart address={"0x00"}/>
-        <AddressHeart address={"0x00"}/>
+        <AddressHeart address={'0x00'} />
+        <AddressHeart address={'0x00'} />
         {pageState === PAGE_STATE.READY && (
           <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
             MINT {mintEthPrice.toString()} ETH
