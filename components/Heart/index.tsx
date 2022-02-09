@@ -1,3 +1,5 @@
+import * as heartSvgs from 'lib/heartSvgs'
+import svgToMiniDataURI from 'mini-svg-data-uri'
 import React, { PropsWithChildren } from 'react'
 import theme from 'styles/theme'
 
@@ -329,4 +331,24 @@ export function ThreeLineText({ line1, line2, line3 }: ThreeLineTextProps) {
       </tspan>
     </>
   )
+}
+
+export function SelectMessageHeart() {
+  return SVGImage(heartSvgs.selectMessageHeartSvg)
+}
+
+export function SendToHeart() {
+  return SVGImage(heartSvgs.sendToHeartSVG)
+}
+
+export function AddressHeart(address: string) {
+  return SVGImage(heartSvgs.addrHeartSVG(address))
+}
+
+export function TextHeart(heartType: number) {
+  return SVGImage(heartSvgs.getTextHeartSVG(heartType))
+}
+
+function SVGImage(svg: string) {
+  return <img src={svgToMiniDataURI(svg)} />
 }
