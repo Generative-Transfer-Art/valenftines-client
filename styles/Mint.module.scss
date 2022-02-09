@@ -59,5 +59,49 @@
 
   &:disabled {
     background-color: hsla(326 96% 52% / 0.15);
+    cursor: not-allowed;
+  }
+}
+
+.pendingButton {}
+
+.pendingLayout {
+  background: radial-gradient(142.75% 65.98% at 50% 50%, #FFB9B9 0%, #FFF7AD 26.04%, #97FFF3 54.17%, #CFBCFF 77.08%, #FFB9B9 100%);
+}
+
+.completeLayout {
+  background: radial-gradient(303.3% 122.89% at 50% 50%, #FFB9B9 0%, #FFF7AD 26.04%, #97FFF3 54.17%, #CFBCFF 77.08%, #FFB9B9 100%);
+}
+
+.blackButton {
+  align-items: center;
+  background-color: var(--black);
+  border: 1px solid transparent;
+  border-radius: 16px;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  font-family: monospace;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: bold;
+  height: 60px;
+  justify-content: center;
+  letter-spacing: 1px;
+  line-height: 24px;
+  margin: 1.5em auto;
+  padding: 18px 20px;
+  width: 320px;
+  transition: 200ms ease all;
+
+  &:hover,
+  &:focus {
+    border: 1px solid var(--hot-pink);
+    background-color: transparent;
+    box-shadow: rgba(47 128 237 / 0.15) 0px 4px 8px 0px;
+    color: var(--hot-pink);
+    outline: none;
   }
 }

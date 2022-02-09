@@ -1,27 +1,84 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { Provider } from '@ethersproject/providers'
+import { Network } from '@web3-react/network'
+import { Valenftines } from 'abis/types/Valenftines'
+import ValenftinesAbi from 'abis/Valenftines.json'
 import Layout from 'components/Layout'
 import SendTo from 'components/SendTo'
+import { Contract } from 'ethers'
 import { useOnlySupportedNetworks } from 'hooks/useOnlySupportedNetworks'
+import usePriorityConnectorHooks from 'hooks/usePriorityConnectorHooks'
 import Link from 'next/link'
 import { useCallback, useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
+import { SupportedChainId } from 'types'
+
+import { VALENFTINES_ADDRESS } from '../constants'
+
+enum PAGE_STATE {
+  READY,
+  PENDING,
+  COMPLETE,
+}
 
 export default function Mint() {
   useOnlySupportedNetworks()
   const [addressGetterOpen, setAddressGetterOpen] = useState(false)
+  const [pageState, setPageState] = useState(PAGE_STATE.COMPLETE)
+  const [txHash, setTxHash] = useState<string | null>(null)
   const [mintEthPrice, setMintEthPrice] = useState<BigNumber>(BigNumber.from(0))
   const [recipient, setRecipient] = useState<string>('')
-  const [msg1, setMsg1] = useState<string>('')
-  const [msg2, setMsg2] = useState<string>('')
-  const [msg3, setMsg3] = useState<string>('')
-  const readyToMint = useMemo(() => recipient && msg1 && msg2 && msg3, [recipient, msg1, msg2, msg3])
+  const [id1, setId1] = useState<number | null>(1)
+  const [id2, setId2] = useState<number | null>(1)
+  const [id3, setId3] = useState<number | null>(1)
+  const hooks = usePriorityConnectorHooks()
+  const connector = hooks.usePriorityConnector()
+  const chainId = hooks.usePriorityChainId()
+  const readyToMint = useMemo(() => chainId && recipient && id1 && id2 && id3, [chainId, recipient, id1, id2, id3])
 
-  const mint = useCallback(() => {
-    console.log('mint')
+  const mint = useCallback(async () => {
+    if (chainId && recipient && !(connector instanceof Network) && id1 && id2 && id3) {
+      const ValenftinesContract = new Contract(
+        VALENFTINES_ADDRESS[chainId as SupportedChainId],
+        ValenftinesAbi.toString(),
+        connector.provider as unknown as Provider
+      ) as Valenftines
+      try {
+        setPageState(PAGE_STATE.PENDING)
+        const transaction = await ValenftinesContract.mint(recipient, id1, id2, id3)
+        setTxHash(transaction.hash)
+        const receipt = await transaction.wait(1)
+        console.log('success!', receipt)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setPageState(PAGE_STATE.COMPLETE)
+        setTxHash(null)
+      }
+      // todo: view on opensea?
+    }
+  }, [chainId, connector, id1, id2, id3, recipient])
+
+  const sendAnother = useCallback(() => {
+    setPageState(PAGE_STATE.READY)
+    setTxHash(null)
   }, [])
 
+  const layoutMainClasses = useMemo(() => {
+    switch (pageState) {
+      case PAGE_STATE.READY:
+        return styles.main
+      case PAGE_STATE.PENDING:
+        return `${styles.main} ${styles.pendingLayout}`
+      case PAGE_STATE.COMPLETE:
+        return `${styles.main} ${styles.completeLayout}`
+    }
+  }, [pageState])
+
+  const etherscanLink = `https://${chainId === SupportedChainId.RINKEBY ? 'rinkeby.' : ''}etherscan.com/tx/${txHash}`
+
   return (
-    <Layout mainClass={styles.main}>
+    <Layout mainClass={layoutMainClasses}>
       {addressGetterOpen && <SendTo close={() => setAddressGetterOpen(false)} saveAddress={setRecipient} />}
       <div className={styles.wrapper}>
         <p>
@@ -29,9 +86,32 @@ export default function Mint() {
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
         <svg></svg>
-        <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
-          Mint {mintEthPrice.toString()} ETH
-        </button>
+        {pageState === PAGE_STATE.READY && (
+          <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
+            MINT {mintEthPrice.toString()} ETH
+          </button>
+        )}
+        {pageState === PAGE_STATE.PENDING && (
+          <>
+            <button className={styles.blackButton}>PENDING...</button>
+            <Link href={etherscanLink}>
+              <a className={styles.blackButton}>VIEW ON ETHERSCAN</a>
+            </Link>
+          </>
+        )}
+        {pageState === PAGE_STATE.COMPLETE && (
+          <>
+            <button className={styles.mintButton} onClick={sendAnother}>
+              SEND ANOTHER
+            </button>
+            <Link href={`https://opensea.io`}>
+              <a className={styles.blackButton}>VIEW ON OPENSEA</a>
+            </Link>
+            <Link href={etherscanLink}>
+              <a className={styles.blackButton}>VIEW ON ETHERSCAN</a>
+            </Link>
+          </>
+        )}
         <p>
           Valenftines are transfer art, and they change when they move between wallets. If your recipient sends this NFT
           back to you, it will upgrade from UNREQUITED to REQUITED and clone itself so you’ll both have a copy!
