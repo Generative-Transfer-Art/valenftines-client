@@ -2,6 +2,7 @@ import { parseEther } from '@ethersproject/units'
 import { Network } from '@web3-react/network'
 import { Valenftines } from 'abis/types'
 import ValenftinesAbi from 'abis/Valenftines.json'
+import { AddressHeart, SelectMessageHeart, SendToHeart } from 'components/Heart'
 import Layout from 'components/Layout'
 import SendTo from 'components/SendTo'
 import { useContract } from 'hooks/useContract'
@@ -87,7 +88,12 @@ export default function Mint() {
           Valenftines are messages, they can only be minted *to* another address. Select your favorite hearts, add the
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
-        <svg></svg>
+        <SendToHeart />
+        <SelectMessageHeart />
+        <SelectMessageHeart />
+        <SelectMessageHeart />
+        <AddressHeart address={'0x00'} />
+        <AddressHeart address={'0x00'} />
         {pageState === PAGE_STATE.READY && (
           <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
             MINT {mintEthPrice.toString()} ETH
