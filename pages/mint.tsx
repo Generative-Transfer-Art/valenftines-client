@@ -1,11 +1,13 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import Layout from 'components/Layout'
 import SendTo from 'components/SendTo'
+import { useOnlySupportedNetworks } from 'hooks/useOnlySupportedNetworks'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
 
 export default function Mint() {
+  useOnlySupportedNetworks()
   const [addressGetterOpen, setAddressGetterOpen] = useState(false)
   const [mintEthPrice, setMintEthPrice] = useState<BigNumber>(BigNumber.from(0))
   const [recipient, setRecipient] = useState<string>('')
@@ -13,6 +15,11 @@ export default function Mint() {
   const [msg2, setMsg2] = useState<string>('')
   const [msg3, setMsg3] = useState<string>('')
   const readyToMint = useMemo(() => recipient && msg1 && msg2 && msg3, [recipient, msg1, msg2, msg3])
+
+  const mint = useCallback(() => {
+    console.log('mint')
+  }, [])
+
   return (
     <Layout mainClass={styles.main}>
       {addressGetterOpen && <SendTo close={() => setAddressGetterOpen(false)} saveAddress={setRecipient} />}
@@ -22,7 +29,7 @@ export default function Mint() {
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
         <svg></svg>
-        <button className={styles.mintButton} disabled={!readyToMint}>
+        <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
           Mint {mintEthPrice.toString()} ETH
         </button>
         <p>

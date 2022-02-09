@@ -33,11 +33,11 @@ export function getAddChainParameters(chainId: number): AddEthereumChainParamete
 
 export const CHAINS: { [chainId: number]: BasicChainInformation | ExtendedChainInformation } = {
   1: {
-    urls: [`https://eth-mainnet.alchemyapi.io/v2/${process.env.alchemyKey}`],
+    urls: [`https://eth-mainnet.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`],
     name: 'Mainnet',
   },
   4: {
-    urls: [`https://eth-rinkeby.alchemyapi.io/v2/${process.env.alchemyKey}`],
+    urls: [`https://eth-rinkeby.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`],
     name: 'Rinkeby',
   },
 }
