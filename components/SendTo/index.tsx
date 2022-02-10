@@ -1,16 +1,31 @@
+import { isAddress } from '@ethersproject/address'
 import CloseButton from 'components/CloseButton'
-import { useState } from 'react'
+import { useUpdateAtom } from 'jotai/utils'
+import { mintAtom } from 'pages/mint'
+import { useCallback, useState } from 'react'
 
 import { Gm } from '../Heart'
 import styles from './SendTo.module.scss'
 
 interface SendToProps {
-  saveAddress: (address: string) => void
   close: () => void
 }
 
-export default function SendTo({ saveAddress, close }: SendToProps) {
+export default function SendTo({ close }: SendToProps) {
+  const setMintState = useUpdateAtom(mintAtom)
   const [address, setAddress] = useState('')
+
+  const saveAddress = useCallback(() => {
+    try {
+      if (isAddress(address)) {
+        setMintState((state) => ({ ...state, recipient: address }))
+        close()
+      }
+    } catch (error) {
+      console.error('error', error)
+    }
+  }, [address, close, setMintState])
+
   return (
     <div className={styles.wrapper}>
       <CloseButton onClick={close} />
@@ -23,7 +38,7 @@ export default function SendTo({ saveAddress, close }: SendToProps) {
         value={address}
         onChange={({ target: { value } }) => setAddress(value)}
       />
-      <button onClick={() => saveAddress(address)} className={styles.saveAddressButton}>
+      <button onClick={saveAddress} className={styles.saveAddressButton}>
         SAVE ADDRESS
       </button>
     </div>

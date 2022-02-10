@@ -1,19 +1,21 @@
 import { parseEther } from '@ethersproject/units'
 import { Valenftines } from 'abis/types'
 import ValenftinesAbi from 'abis/Valenftines.json'
+import { useAtomValue } from 'jotai/utils'
 import Link from 'next/link'
-import { MintState, PAGE_STATE } from 'pages/mint'
+import { mintAtom, PAGE_STATE } from 'pages/mint'
 import { useCallback, useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
 import { SupportedChainId } from 'types'
 import { useContract, useNetwork } from 'wagmi'
 
 interface MintControlsProps {
-  mintState: MintState
   pageState: PAGE_STATE
   setPageState: (p: PAGE_STATE) => void
 }
-export default function MintControls({ mintState, pageState, setPageState }: MintControlsProps) {
+
+export default function MintControls({ pageState, setPageState }: MintControlsProps) {
+  const mintState = useAtomValue(mintAtom)
   const [
     {
       data: { chain },

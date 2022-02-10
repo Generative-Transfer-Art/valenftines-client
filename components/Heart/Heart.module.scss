@@ -4,6 +4,10 @@
   margin: 0 11px;
 }
 
+.interactive {
+  cursor: pointer;
+}
+
 .float {
   animation: 1500ms ease-in-out infinite alternate float;
 }

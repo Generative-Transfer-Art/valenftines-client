@@ -2,8 +2,9 @@ import { AddressHeart, SelectMessageHeart, SendToHeart } from 'components/Heart'
 import Layout from 'components/Layout'
 import MintControls from 'components/MintControls'
 import SendTo from 'components/SendTo'
+import { atom } from 'jotai'
 import Link from 'next/link'
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
 
 export enum PAGE_STATE {
@@ -19,13 +20,14 @@ export interface MintState {
   id3: number
 }
 
+export const mintAtom = atom<MintState>({
+  recipient: '',
+  id1: 1,
+  id2: 2,
+  id3: 3,
+})
+
 export default function Mint() {
-  const [mintState, setMintState] = useState<MintState>({
-    recipient: '',
-    id1: 1,
-    id2: 2,
-    id3: 3,
-  })
   const [addressGetterOpen, setAddressGetterOpen] = useState(false)
   const [pageState, setPageState] = useState(PAGE_STATE.READY)
 
@@ -40,16 +42,9 @@ export default function Mint() {
     }
   }, [pageState])
 
-  const setRecipient = useCallback(
-    (recipient: string) => {
-      setMintState((state) => ({ ...state, recipient }))
-    },
-    [setMintState]
-  )
-
   return (
     <Layout mainClass={layoutMainClasses}>
-      {addressGetterOpen && <SendTo close={() => setAddressGetterOpen(false)} saveAddress={setRecipient} />}
+      {addressGetterOpen && <SendTo close={() => setAddressGetterOpen(false)} />}
       <div className={styles.wrapper}>
         <p>
           Valenftines are messages, they can only be minted *to* another address. Select your favorite hearts, add the
@@ -60,7 +55,7 @@ export default function Mint() {
             <AddressHeart address={'0x00'} />
           </div>
           <div className={styles.sendToHeart}>
-            <SendToHeart />
+            <SendToHeart onClick={() => setAddressGetterOpen(true)} />
           </div>
           <div className={styles.heart1}>
             <SelectMessageHeart />
@@ -72,7 +67,7 @@ export default function Mint() {
             <SelectMessageHeart />
           </div>
         </div>
-        <MintControls mintState={mintState} setPageState={setPageState} pageState={pageState} />
+        <MintControls setPageState={setPageState} pageState={pageState} />
         <p>
           Valenftines are transfer art, and they change when they move between wallets. If your recipient sends this NFT
           back to you, it will upgrade from UNREQUITED to REQUITED and clone itself so you’ll both have a copy!
