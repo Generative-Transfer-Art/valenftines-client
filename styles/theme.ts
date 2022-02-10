@@ -12,6 +12,7 @@ const theme = {
     'radial-gradient(142.75% 65.98% at 50% 50%, #ffb9b9 0%, #fff7ad 26.04%, #97fff3 54.17%, #cfbcff 77.08%, #ffb9b9 100%)',
 
   pinkShadow: '0px 0px 30px 5px rgba(250, 15, 149, 0.2)',
+  none: 'none'
 }
 
 export default theme
