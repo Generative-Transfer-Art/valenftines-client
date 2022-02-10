@@ -88,12 +88,16 @@ export default function Mint() {
           Valenftines are messages, they can only be minted *to* another address. Select your favorite hearts, add the
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
-        <SendToHeart />
-        <SelectMessageHeart />
-        <SelectMessageHeart />
-        <SelectMessageHeart />
-        <AddressHeart address={'0x00'} />
-        <AddressHeart address={'0x00'} />
+
+        
+        <div className={styles.heartsWrapper}>
+          <div className={styles.sendFromHeart}><AddressHeart address={'0x00'} /></div>
+          <div className={styles.sendToHeart}><SendToHeart /></div>
+          <div className={styles.heart1}><SelectMessageHeart /></div>
+          <div className={styles.heart2}><SelectMessageHeart /></div>
+          <div className={styles.heart3}><SelectMessageHeart /></div>
+        </div>
+
         {pageState === PAGE_STATE.READY && (
           <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
             MINT {mintEthPrice.toString()} ETH
