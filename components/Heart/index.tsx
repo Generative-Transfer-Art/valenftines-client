@@ -18,7 +18,7 @@ interface BaseHeartProps {
 const TEXT_STYLE = {
   fontSize: '30px',
   fontFamily: 'monospace',
-  fontWeight: 600,
+  fontWeight: 500,
   letterSpacing: '1px',
 }
 
