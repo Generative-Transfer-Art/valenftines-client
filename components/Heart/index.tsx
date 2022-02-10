@@ -379,6 +379,22 @@ export function SendToHeart({ onClick }: { onClick: () => void }) {
   )
 }
 
+export function ConnectHeart({ onClick }: { onClick: () => void }) {
+  return (
+    <BaseHeart
+      classes={[styles.interactive]}
+      fill={theme.none}
+      color={theme.hotPink}
+      strokeDasharray={8}
+      stroke={theme.black}
+      strokeWidth={4}
+      onClick={onClick}
+    >
+      <OneLineText line1={'CONNECT'} />
+    </BaseHeart>
+  )
+}
+
 interface AddressHeartProps {
   address: string
 }
