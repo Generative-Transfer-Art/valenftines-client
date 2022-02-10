@@ -6,7 +6,7 @@
     "compile:contracts": "typechain --target ethers-v5 --out-dir abis/types \"./abis/**/*.json\" --show-stack-traces",
     "dev": "next dev",
     "lint": "next lint --fix",
-    "prepare": "yarn compile:contracts",
+    "prepare": "yarn compile:contracts && husky install",
     "start": "next start"
   },
   "dependencies": {
@@ -41,7 +41,9 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": "^7.0.0",
     "prettier": "^2.5.1",
+    "pretty-quick": "^3.1.3",
     "typechain": "^7.0.0",
     "typescript": "4.5.4"
   }
