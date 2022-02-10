@@ -1,0 +1,53 @@
+.heartsWrapper{
+    position: relative;
+    width: 335px;;
+    height: 402px;
+    margin: auto;
+  }
+  
+  .sendToHeart{
+    position: absolute;
+    width: 146px;
+    height: 136.27px;
+    left: 98px;
+    top: 128px;
+    transform: rotate(-7.74deg);
+  }
+  
+  .sendFromHeart{
+    position: absolute;
+    width: 146px;
+    height: 136.27px;
+    left: 0px;
+    top: 26px;
+    transform: rotate(13.4deg);
+  }
+  
+  .heart1{
+    position: absolute;
+    left: 182px;
+    transform: rotate(-13.19deg);
+    &:hover{
+        cursor: pointer
+    }
+  }
+  
+  .heart2{
+    position: absolute;
+    left: 5px;
+    top: 235px;
+    transform: rotate(10.15deg);
+    &:hover{
+        cursor: pointer
+    }
+  }
+  
+  .heart3{
+    position: absolute;
+    left: 188px;
+    top: 246px;
+    transform: rotate(-21.87deg);
+    &:hover{
+        cursor: pointer
+    }
+  }

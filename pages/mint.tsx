@@ -2,12 +2,13 @@ import { parseEther } from '@ethersproject/units'
 import { Network } from '@web3-react/network'
 import { Valenftines } from 'abis/types'
 import ValenftinesAbi from 'abis/Valenftines.json'
-import { AddressHeart, SelectMessageHeart, SendToHeart } from 'components/Heart'
+import { AddressHeart, SelectMessageHeart, SendToHeart, TextHeart } from 'components/Heart'
+import HeartPicker from 'components/HeartPicker'
 import Layout from 'components/Layout'
-import SendTo from 'components/SendTo'
 import { useContract } from 'hooks/useContract'
 import { useOnlySupportedNetworks } from 'hooks/useOnlySupportedNetworks'
 import usePriorityConnectorHooks from 'hooks/usePriorityConnectorHooks'
+import { mintCostETH, mintCostWei } from 'lib/mintCost'
 import Link from 'next/link'
 import { useCallback, useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
@@ -22,17 +23,14 @@ enum PAGE_STATE {
 }
 
 export default function Mint() {
-  useOnlySupportedNetworks()
-  const [addressGetterOpen, setAddressGetterOpen] = useState(false)
+  useOnlySupportedNetworks()  
   const [pageState, setPageState] = useState(PAGE_STATE.READY)
   const [txHash, setTxHash] = useState<string | null>(null)
-  const [mintEthPrice, setMintEthPrice] = useState<string>('1')
   const [recipient, setRecipient] = useState<string>('')
-  const [id1, setId1] = useState<number | null>(1)
-  const [id2, setId2] = useState<number | null>(2)
-  const [id3, setId3] = useState<number | null>(3)
+  const [id1, setId1] = useState<number>(0)
+  const [id2, setId2] = useState<number>(0)
+  const [id3, setId3] = useState<number>(0)
 
-  console.log(setId1, setId2, setId3, setMintEthPrice)
   const hooks = usePriorityConnectorHooks()
   const connector = hooks.usePriorityConnector()
   const chainId = hooks.usePriorityChainId()
@@ -43,12 +41,16 @@ export default function Mint() {
     JSON.stringify(ValenftinesAbi)
   )
 
+  const mintEthPrice : number = useMemo(() => {
+    return mintCostETH(id1) + mintCostETH(id2) + mintCostETH(id3)
+  }, [id1, id2, id3])
+
   const mint = useCallback(async () => {
     if (chainId && recipient && !(connector instanceof Network) && id1 && id2 && id3 && valeNFTinesContract) {
       try {
         setPageState(PAGE_STATE.PENDING)
         const transaction = await valeNFTinesContract.mint(recipient, id1, id2, id3, {
-          value: parseEther(mintEthPrice),
+          value: parseEther(mintEthPrice.toString()),
         })
         setTxHash(transaction.hash)
         const receipt = await transaction.wait(1)
@@ -67,6 +69,7 @@ export default function Mint() {
     setTxHash(null)
   }, [])
 
+
   const layoutMainClasses = useMemo(() => {
     switch (pageState) {
       case PAGE_STATE.READY:
@@ -82,21 +85,21 @@ export default function Mint() {
 
   return (
     <Layout mainClass={layoutMainClasses}>
-      {addressGetterOpen && <SendTo close={() => setAddressGetterOpen(false)} saveAddress={setRecipient} />}
       <div className={styles.wrapper}>
         <p>
           Valenftines are messages, they can only be minted *to* another address. Select your favorite hearts, add the
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
 
-        
-        <div className={styles.heartsWrapper}>
-          <div className={styles.sendFromHeart}><AddressHeart address={'0x00'} /></div>
-          <div className={styles.sendToHeart}><SendToHeart /></div>
-          <div className={styles.heart1}><SelectMessageHeart /></div>
-          <div className={styles.heart2}><SelectMessageHeart /></div>
-          <div className={styles.heart3}><SelectMessageHeart /></div>
-        </div>
+        <HeartPicker 
+          heart1={id1}
+          heart2={id2}
+          heart3={id3}
+          setToAddress={setRecipient}
+          setHeart1={setId1}
+          setHeart2={setId2}
+          setHeart3={setId3}
+        />
 
         {pageState === PAGE_STATE.READY && (
           <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>

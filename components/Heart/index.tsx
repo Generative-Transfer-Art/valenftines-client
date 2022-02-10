@@ -1,7 +1,5 @@
-import * as heartSvgs from 'lib/heartSvgs'
 import svgToMiniDataURI from 'mini-svg-data-uri'
 import React, { PropsWithChildren } from 'react'
-import { SassColor } from 'sass'
 import theme from 'styles/theme'
 
 import styles from './Heart.module.scss'

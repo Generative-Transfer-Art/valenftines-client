@@ -1,0 +1,26 @@
+.heartPickerModalWrapper{
+    background-color: white;
+    position: fixed;
+    width: 60%;
+    z-index: 1;
+    height: 90%;
+    left: 15%;
+    float: left;
+}
+
+.tier1HeartsWrapper{
+    background-color: #FFF6AE;
+    height: 420px;
+}
+
+.tier2HeartsWrapper{
+    background-color: #A4FFCA;
+    height: 300px;
+}
+
+.heart {
+    float: left;
+    &:hover{
+        cursor: pointer;
+    }
+}
