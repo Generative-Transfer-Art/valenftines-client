@@ -1,6 +1,7 @@
 import * as heartSvgs from 'lib/heartSvgs'
 import svgToMiniDataURI from 'mini-svg-data-uri'
 import React, { PropsWithChildren } from 'react'
+import { SassColor } from 'sass'
 import theme from 'styles/theme'
 
 import styles from './Heart.module.scss'
@@ -9,6 +10,9 @@ interface BaseHeartProps {
   classes?: string[]
   color?: string
   fill?: string
+  strokeDasharray?: number,
+  stroke?: string,
+  strokeWidth?: number,
 }
 
 const TEXT_STYLE = {
@@ -18,7 +22,7 @@ const TEXT_STYLE = {
   letterSpacing: '1px',
 }
 
-function BaseHeart({ classes, children, color = theme.white, fill = theme.black }: PropsWithChildren<BaseHeartProps>) {
+function BaseHeart({ classes, children, color = theme.white, fill = theme.black, strokeDasharray = 0, stroke = theme.none, strokeWidth = 0 }: PropsWithChildren<BaseHeartProps>) {
   let svgClasses = [styles.heart, styles.baseHeart]
   if (classes) {
     svgClasses = [...svgClasses, ...classes]
@@ -36,6 +40,9 @@ function BaseHeart({ classes, children, color = theme.white, fill = theme.black 
         <path
           d="M79.2-43C71.2-78.4,30.8-84.9,5-60.9c-2.5,2.3-6.4,2.1-8.8-0.3c-25-25.9-75.1-15-76.7,28.2C-82.6,22.3-14,75.2,1.5,75.1C17.3,75.1,91.3,10.7,79.2-43z"
           fill={fill}
+          stroke={stroke}
+          strokeWidth={strokeWidth}
+          strokeDasharray={strokeDasharray}
         />
         <text fill={color} textAnchor="middle" style={TEXT_STYLE}>
           {children}
@@ -334,11 +341,19 @@ export function ThreeLineText({ line1, line2, line3 }: ThreeLineTextProps) {
 }
 
 export function SelectMessageHeart() {
-  return SVGImage(heartSvgs.selectMessageHeartSvg)
+  return (
+    <BaseHeart fill={theme.none} color={theme.hotPink} strokeDasharray={8} stroke={theme.black} strokeWidth={4}>
+      <TwoLineText line1={'SELECT'} line2={'MSG'} />
+    </BaseHeart>
+  )
 }
 
 export function SendToHeart() {
-  return <div className="heart"> {SVGImage(heartSvgs.sendToHeartSVG)} </div>
+  return (
+    <BaseHeart fill={theme.none} color={theme.hotPink} strokeDasharray={8} stroke={theme.black} strokeWidth={4}>
+      <TwoLineText line1={'SEND'} line2={'TO?'} />
+    </BaseHeart>
+  )
 }
 
 interface AddressHeartProps {
@@ -346,7 +361,11 @@ interface AddressHeartProps {
 }
 
 export function AddressHeart({ address }: AddressHeartProps) {
-  return SVGImage(heartSvgs.addrHeartSVG(address))
+  return (
+    <BaseHeart fill={theme.white} color={theme.hotPink}>
+      <OneLineText line1={address} />
+    </BaseHeart>
+  )
 }
 
 interface TextHeartProps {
@@ -354,7 +373,51 @@ interface TextHeartProps {
 }
 
 export function TextHeart({ heartType }: TextHeartProps) {
-  return SVGImage(heartSvgs.getTextHeartSVG(heartType))
+  return heartType < 2
+    ? Bullish4You()
+    : heartType < 3
+    ? BeMine()
+    : heartType < 4
+    ? ToTheMoon()
+    : heartType < 5
+    ? CoolCat()
+    : heartType < 6
+    ? CutiePie()
+    : heartType < 7
+    ? ZeroXZeroX()
+    : heartType < 8
+    ? BestFren()
+    : heartType < 9
+    ? BigFan()
+    : heartType < 10
+    ? Gm()
+    : heartType < 11
+    ? CoinBae()
+    : heartType < 12
+    ? SayIDAO()
+    : heartType < 13
+    ? Wagmi()
+    : heartType < 14
+    ? MyDegen()
+    : heartType < 15
+    ? PayMyTaxes()
+    : heartType < 16
+    ? UpOnly()
+    : heartType < 17
+    ? LilMfer()
+    : heartType < 18
+    ? OnboardMe()
+    : heartType < 19
+    ? LetsMerge()
+    : heartType < 20
+    ? HodlMe()
+    : heartType < 21
+    ? LooksRare()
+    : heartType < 22
+    ? WenRing()
+    : heartType < 23
+    ? IdMintYou()
+    : SimpForYou()
 }
 
 function SVGImage(svg: string) {
