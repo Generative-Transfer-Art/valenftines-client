@@ -1,4 +1,4 @@
-import { AddressHeart, SelectMessageHeart, SendToHeart } from 'components/Heart'
+import HeartPicker from 'components/HeartPicker'
 import Layout from 'components/Layout'
 import MintControls from 'components/MintControls'
 import SendTo from 'components/SendTo'
@@ -60,23 +60,7 @@ export default function Mint() {
           Valenftines are messages, they can only be minted *to* another address. Select your favorite hearts, add the
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
-        <div className={styles.heartsWrapper}>
-          <div className={styles.sendFromHeart}>
-            <AddressHeart address={'0x00'} />
-          </div>
-          <div className={styles.sendToHeart}>
-            <SendToHeart onClick={() => setAddressGetterOpen(true)} />
-          </div>
-          <div className={styles.heart1}>
-            <SelectMessageHeart />
-          </div>
-          <div className={styles.heart2}>
-            <SelectMessageHeart />
-          </div>
-          <div className={styles.heart3}>
-            <SelectMessageHeart />
-          </div>
-        </div>
+        <HeartPicker openAddressGetter={() => setAddressGetterOpen(true)} />
         <MintControls setPageState={setPageState} pageState={pageState} />
         <p>
           Valenftines are transfer art, and they change when they move between wallets. If your recipient sends this NFT
