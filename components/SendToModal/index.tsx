@@ -1,17 +1,17 @@
 import { isAddress } from '@ethersproject/address'
-import CloseButton from 'components/CloseButton'
+import Modal from 'components/Modal'
 import { useUpdateAtom } from 'jotai/utils'
 import { mintAtom } from 'pages/mint'
 import { useCallback, useState } from 'react'
 
-import { Gm } from '../Heart'
-import styles from './SendTo.module.scss'
+import { SendToHeart } from '../Heart'
+import styles from './SendToModal.module.scss'
 
-interface SendToProps {
+interface SendToModalProps {
   close: () => void
 }
 
-export default function SendTo({ close }: SendToProps) {
+export default function SendToModal({ close }: SendToModalProps) {
   const setMintState = useUpdateAtom(mintAtom)
   const [address, setAddress] = useState('')
 
@@ -27,9 +27,8 @@ export default function SendTo({ close }: SendToProps) {
   }, [address, close, setMintState])
 
   return (
-    <div className={styles.wrapper}>
-      <CloseButton onClick={close} />
-      <Gm />
+    <Modal close={close}>
+      <SendToHeart />
       <h1 className={styles.title}>Paste Eth Address</h1>
       <input
         className={styles.addressInput}
@@ -41,6 +40,6 @@ export default function SendTo({ close }: SendToProps) {
       <button onClick={saveAddress} className={styles.saveAddressButton}>
         SAVE ADDRESS
       </button>
-    </div>
+    </Modal>
   )
 }

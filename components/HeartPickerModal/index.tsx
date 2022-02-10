@@ -1,12 +1,14 @@
 import * as Hearts from 'components/Heart'
+import Modal from 'components/Modal'
 
 import styles from './HeartPickerModal.module.scss'
 
 interface HeartPickerModalProps {
+  close: () => void
   selectHeart: (heartType: number) => void
 }
 
-export default function HeartPickerModal({ selectHeart }: HeartPickerModalProps) {
+export default function HeartPickerModal({ close, selectHeart }: HeartPickerModalProps) {
   const tier1Hearts = new Array(10).fill(1).map(function (_, i) {
     return (
       <div key={i} className={styles.heart} onClick={() => selectHeart(i + 1)}>
@@ -25,9 +27,9 @@ export default function HeartPickerModal({ selectHeart }: HeartPickerModalProps)
     )
   })
   return (
-    <div className={styles.heartPickerModalWrapper}>
+    <Modal close={close}>
       <div className={styles.tier1HeartsWrapper}>{tier1Hearts}</div>
       <div className={styles.tier2HeartsWrapper}>{tier2Hearts}</div>
-    </div>
+    </Modal>
   )
 }

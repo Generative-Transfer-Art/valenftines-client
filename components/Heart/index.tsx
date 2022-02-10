@@ -363,10 +363,10 @@ export function SelectMessageHeart() {
   )
 }
 
-export function SendToHeart({ onClick }: { onClick: () => void }) {
+export function SendToHeart({ onClick }: { onClick?: () => void }) {
   return (
     <BaseHeart
-      classes={[styles.interactive]}
+      classes={[onClick ? styles.interactive : '']}
       fill={theme.none}
       color={theme.hotPink}
       strokeDasharray={8}

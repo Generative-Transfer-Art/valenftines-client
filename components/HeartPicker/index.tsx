@@ -11,6 +11,7 @@ import styles from './HeartPicker.module.scss'
 export default function HeartPicker({ openAddressGetter }: { openAddressGetter: () => void }) {
   const [{ recipient, id1: heart1, id2: heart2, id3: heart3 }, setMintState] = useAtom(mintAtom)
   const [presentHeartPicker, setPresentHeartPicker] = useState<boolean>(false)
+  const toggleHeartPickerModal = useCallback(() => setPresentHeartPicker(!presentHeartPicker), [presentHeartPicker])
   const [selectedHeart, setSelectedHeart] = useState<number>(0)
   const [open, setOpen] = useState(false)
   const toggleConnectionModal = useCallback(() => setOpen(!open), [open])
@@ -40,7 +41,7 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
   return (
     <div>
       {open && <ConnectorModal close={toggleConnectionModal} />}
-      {presentHeartPicker ? <HeartPickerModal selectHeart={(h) => setHeart(h)} /> : ''}
+      {presentHeartPicker && <HeartPickerModal close={toggleHeartPickerModal} selectHeart={(h) => setHeart(h)} />}
       <div className={styles.heartsWrapper}>
         <div className={styles.sendFromHeart}>
           {accountData == null ? (

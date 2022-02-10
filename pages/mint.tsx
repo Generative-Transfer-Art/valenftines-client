@@ -1,7 +1,7 @@
 import HeartPicker from 'components/HeartPicker'
 import Layout from 'components/Layout'
 import MintControls from 'components/MintControls'
-import SendTo from 'components/SendTo'
+import SendToModal from 'components/SendToModal'
 import { atom } from 'jotai'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
@@ -44,7 +44,7 @@ export default function Mint() {
 
   return (
     <Layout mainClass={layoutMainClasses}>
-      {addressGetterOpen && <SendTo close={() => setAddressGetterOpen(false)} />}
+      {addressGetterOpen && <SendToModal close={() => setAddressGetterOpen(false)} />}
       <div className={styles.wrapper}>
         <p>
           Valenftines are messages, they can only be minted *to* another address. Select your favorite hearts, add the
