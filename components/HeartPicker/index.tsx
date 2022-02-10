@@ -7,7 +7,7 @@ import { useCallback, useState } from 'react'
 import styles from './HeartPicker.module.scss'
 
 export default function HeartPicker({ openAddressGetter }: { openAddressGetter: () => void }) {
-  const [{ id1: heart1, id2: heart2, id3: heart3 }, setMintState] = useAtom(mintAtom)
+  const [{ recipient, id1: heart1, id2: heart2, id3: heart3 }, setMintState] = useAtom(mintAtom)
   const [presentHeartPicker, setPresentHeartPicker] = useState<boolean>(false)
   const [selectedHeart, setSelectedHeart] = useState<number>(0)
 
@@ -38,7 +38,11 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
           <Hearts.AddressHeart address={'0x00'} />
         </div>
         <div className={styles.sendToHeart}>
-          <Hearts.SendToHeart onClick={openAddressGetter} />
+          {recipient == '' ? (
+            <Hearts.SendToHeart onClick={openAddressGetter} />
+          ) : (
+            <Hearts.AddressHeart address={recipient.slice(0, 6)} />
+          )}
         </div>
 
         <div className={styles.heart1} onClick={() => present(1)}>

@@ -32,8 +32,6 @@ export default function Mint() {
   const [addressGetterOpen, setAddressGetterOpen] = useState(false)
   const [pageState, setPageState] = useState(PAGE_STATE.READY)
 
-  const { id1, id2, id3 } = useAtomValue(mintAtom)
-
   const layoutMainClasses = useMemo(() => {
     switch (pageState) {
       case PAGE_STATE.READY:
