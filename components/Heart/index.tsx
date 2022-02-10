@@ -1,7 +1,4 @@
-import * as heartSvgs from 'lib/heartSvgs'
-import svgToMiniDataURI from 'mini-svg-data-uri'
 import React, { PropsWithChildren } from 'react'
-import { SassColor } from 'sass'
 import theme from 'styles/theme'
 
 import styles from './Heart.module.scss'
@@ -10,9 +7,9 @@ interface BaseHeartProps {
   classes?: string[]
   color?: string
   fill?: string
-  strokeDasharray?: number,
-  stroke?: string,
-  strokeWidth?: number,
+  strokeDasharray?: number
+  stroke?: string
+  strokeWidth?: number
 }
 
 const TEXT_STYLE = {
@@ -22,7 +19,15 @@ const TEXT_STYLE = {
   letterSpacing: '1px',
 }
 
-function BaseHeart({ classes, children, color = theme.white, fill = theme.black, strokeDasharray = 0, stroke = theme.none, strokeWidth = 0 }: PropsWithChildren<BaseHeartProps>) {
+function BaseHeart({
+  classes,
+  children,
+  color = theme.white,
+  fill = theme.black,
+  strokeDasharray = 0,
+  stroke = theme.none,
+  strokeWidth = 0,
+}: PropsWithChildren<BaseHeartProps>) {
   let svgClasses = [styles.heart, styles.baseHeart]
   if (classes) {
     svgClasses = [...svgClasses, ...classes]
@@ -418,8 +423,4 @@ export function TextHeart({ heartType }: TextHeartProps) {
     : heartType < 23
     ? IdMintYou()
     : SimpForYou()
-}
-
-function SVGImage(svg: string) {
-  return <img className={styles.heart} src={svgToMiniDataURI(svg)} />
 }
