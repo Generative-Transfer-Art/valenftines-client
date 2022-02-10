@@ -18,7 +18,6 @@ const chains = [chain.mainnet, chain.rinkeby]
 
 // Set up connectors
 const connectors = ({ chainId }: { chainId?: number | undefined }) => {
-  console.log(chains)
   const rpcUrl = chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ?? chain.mainnet.rpcUrls[0]
   return [
     new InjectedConnector({
@@ -28,7 +27,7 @@ const connectors = ({ chainId }: { chainId?: number | undefined }) => {
     new WalletConnectConnector({
       options: {
         qrcode: true,
-        // infuraId: process.env.NEXT_PUBLIC_INFURA_ID,
+        infuraId: process.env.NEXT_PUBLIC_INFURA_ID,
         rpc: {
           [chain.mainnet.id]: `https://eth-mainnet.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
           [chain.rinkeby.id]: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
