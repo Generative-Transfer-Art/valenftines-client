@@ -7,7 +7,7 @@ interface HeartPickerModalProps {
 }
 
 export default function HeartPickerModal({ selectHeart }: HeartPickerModalProps) {
-  const tier1Hearts = Array.apply(null, Array(10)).map(function (_, i) {
+  const tier1Hearts = new Array(10).fill(1).map(function (_, i) {
     return (
       <div key={i} className={styles.heart} onClick={() => selectHeart(i + 1)}>
         {' '}
@@ -16,7 +16,7 @@ export default function HeartPickerModal({ selectHeart }: HeartPickerModalProps)
     )
   })
 
-  const tier2Hearts = Array.apply(null, Array(7)).map(function (_, i) {
+  const tier2Hearts = new Array(10).fill(7).map(function (_, i) {
     return (
       <div key={i} className={styles.heart} onClick={() => selectHeart(i + 11)}>
         {' '}

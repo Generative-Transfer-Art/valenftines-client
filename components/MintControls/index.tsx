@@ -26,7 +26,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
 
   const mintEthPrice = useMemo(() => {
     const { id1, id2, id3 } = mintState
-    let cost = mintCostETH(id1) + mintCostETH(id2) + mintCostETH(id3)
+    const cost = mintCostETH(id1) + mintCostETH(id2) + mintCostETH(id3)
     return cost.toString()
   }, [mintState])
 
