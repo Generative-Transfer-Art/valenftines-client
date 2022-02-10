@@ -2,7 +2,7 @@
   "name": "valenftines-client",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "yarn prepare && next build",
     "compile:contracts": "typechain --target ethers-v5 --out-dir abis/types \"./abis/**/*.json\" --show-stack-traces",
     "dev": "next dev",
     "lint": "next lint --fix",
