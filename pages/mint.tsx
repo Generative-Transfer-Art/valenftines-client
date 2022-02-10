@@ -3,6 +3,8 @@ import Layout from 'components/Layout'
 import MintControls from 'components/MintControls'
 import SendTo from 'components/SendTo'
 import { atom } from 'jotai'
+import { useAtomValue } from 'jotai/utils'
+import { mintCostETH } from 'lib/mintCost'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
@@ -30,6 +32,14 @@ export const mintAtom = atom<MintState>({
 export default function Mint() {
   const [addressGetterOpen, setAddressGetterOpen] = useState(false)
   const [pageState, setPageState] = useState(PAGE_STATE.READY)
+
+  const { id1, id2, id3 } = useAtomValue(mintAtom)
+
+  const mintEthPrice: number = useMemo(() => {
+    return mintCostETH(id1) + mintCostETH(id2) + mintCostETH(id3)
+  }, [id1, id2, id3])
+
+  console.log('price: ', mintEthPrice)
 
   const layoutMainClasses = useMemo(() => {
     switch (pageState) {
