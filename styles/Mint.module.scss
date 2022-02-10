@@ -28,8 +28,8 @@
 .mintButton {
   align-items: center;
   background-color: var(--hot-pink);
-  border: 1px solid transparent;
   border-radius: 16px;
+  border: 1px solid transparent;
   color: var(--white);
   cursor: pointer;
   display: flex;
@@ -44,13 +44,13 @@
   line-height: 24px;
   margin: 1.5em auto;
   padding: 18px 20px;
-  width: 320px;
   transition: 200ms ease all;
+  width: 320px;
 
   &:hover,
   &:focus {
-    border: 1px solid var(--hot-pink);
     background-color: transparent;
+    border: 1px solid var(--hot-pink);
     box-shadow: rgba(47 128 237 / 0.15) 0px 4px 8px 0px;
     color: var(--hot-pink);
     outline: none;
@@ -58,29 +58,44 @@
 
   &:disabled {
     background-color: hsla(326 96% 52% / 0.15);
-    color: var(--white);
-    cursor: not-allowed;
     border: 1px solid transparent;
     box-shadow: unset;
+    color: var(--white);
+    cursor: not-allowed;
     outline: none;
   }
 }
 
-.pendingButton {}
+.pendingButton {
+}
 
 .pendingLayout {
-  background: radial-gradient(142.75% 65.98% at 50% 50%, #FFB9B9 0%, #FFF7AD 26.04%, #97FFF3 54.17%, #CFBCFF 77.08%, #FFB9B9 100%);
+  background: radial-gradient(
+    142.75% 65.98% at 50% 50%,
+    #ffb9b9 0%,
+    #fff7ad 26.04%,
+    #97fff3 54.17%,
+    #cfbcff 77.08%,
+    #ffb9b9 100%
+  );
 }
 
 .completeLayout {
-  background: radial-gradient(303.3% 122.89% at 50% 50%, #FFB9B9 0%, #FFF7AD 26.04%, #97FFF3 54.17%, #CFBCFF 77.08%, #FFB9B9 100%);
+  background: radial-gradient(
+    303.3% 122.89% at 50% 50%,
+    #ffb9b9 0%,
+    #fff7ad 26.04%,
+    #97fff3 54.17%,
+    #cfbcff 77.08%,
+    #ffb9b9 100%
+  );
 }
 
 .blackButton {
   align-items: center;
   background-color: var(--black);
-  border: 1px solid transparent;
   border-radius: 16px;
+  border: 1px solid transparent;
   border: none;
   color: var(--white);
   cursor: pointer;
@@ -96,15 +111,74 @@
   line-height: 24px;
   margin: 1.5em auto;
   padding: 18px 20px;
-  width: 320px;
   transition: 200ms ease all;
+  width: 320px;
 
   &:hover,
   &:focus {
-    border: 1px solid var(--hot-pink);
     background-color: transparent;
+    border: 1px solid var(--hot-pink);
     box-shadow: rgba(47 128 237 / 0.15) 0px 4px 8px 0px;
     color: var(--hot-pink);
     outline: none;
   }
+}
+
+.heartsWrapper {
+  height: 402px;
+  margin: auto;
+  position: relative;
+  width: 335px;
+
+  & > div {
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.sendToHeart {
+  height: 136.27px;
+  left: 98px;
+  position: absolute;
+  top: 128px;
+  transform: rotate(-7.74deg);
+  width: 146px;
+}
+
+.sendFromHeart {
+  height: 136.27px;
+  left: 0px;
+  position: absolute;
+  top: 26px;
+  transform: rotate(13.4deg);
+  width: 146px;
+}
+
+.heart1 {
+  height: 136.27px;
+  left: 182px;
+  position: absolute;
+  transform: rotate(-13.19deg);
+  width: 146px;
+}
+
+.heart2 {
+  height: 136.27px;
+  left: 5px;
+  position: absolute;
+  top: 235px;
+  transform: rotate(10.15deg);
+  width: 146px;
+}
+
+.heart3 {
+  height: 136.27px;
+  left: 188px;
+  position: absolute;
+  top: 246px;
+  transform: rotate(-21.87deg);
+  width: 146px;
 }

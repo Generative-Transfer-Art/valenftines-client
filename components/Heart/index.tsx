@@ -1,4 +1,3 @@
-import svgToMiniDataURI from 'mini-svg-data-uri'
 import React, { PropsWithChildren } from 'react'
 import theme from 'styles/theme'
 
@@ -8,19 +7,29 @@ interface BaseHeartProps {
   classes?: string[]
   color?: string
   fill?: string
-  strokeDasharray?: number,
-  stroke?: string,
-  strokeWidth?: number,
+  strokeDasharray?: number
+  stroke?: string
+  strokeWidth?: number
+  onClick?: () => void
 }
 
 const TEXT_STYLE = {
   fontSize: '30px',
   fontFamily: 'monospace',
-  fontWeight: 600,
+  fontWeight: 500,
   letterSpacing: '1px',
 }
 
-function BaseHeart({ classes, children, color = theme.white, fill = theme.black, strokeDasharray = 0, stroke = theme.none, strokeWidth = 0 }: PropsWithChildren<BaseHeartProps>) {
+function BaseHeart({
+  classes,
+  children,
+  color = theme.white,
+  fill = theme.black,
+  strokeDasharray = 0,
+  stroke = theme.none,
+  strokeWidth = 0,
+  onClick,
+}: PropsWithChildren<BaseHeartProps>) {
   let svgClasses = [styles.heart, styles.baseHeart]
   if (classes) {
     svgClasses = [...svgClasses, ...classes]
@@ -33,6 +42,7 @@ function BaseHeart({ classes, children, color = theme.white, fill = theme.black,
       viewBox="0 0 162 162"
       xmlSpace="preserve"
       className={svgClasses.join(' ')}
+      onClick={onClick}
     >
       <g transform="translate(81,81)">
         <path
@@ -340,15 +350,30 @@ export function ThreeLineText({ line1, line2, line3 }: ThreeLineTextProps) {
 
 export function SelectMessageHeart() {
   return (
-    <BaseHeart fill={theme.none} color={theme.hotPink} strokeDasharray={8} stroke={theme.black} strokeWidth={4}>
+    <BaseHeart
+      classes={[styles.interactive]}
+      fill={theme.none}
+      color={theme.hotPink}
+      strokeDasharray={8}
+      stroke={theme.black}
+      strokeWidth={4}
+    >
       <TwoLineText line1={'SELECT'} line2={'MSG'} />
     </BaseHeart>
   )
 }
 
-export function SendToHeart() {
+export function SendToHeart({ onClick }: { onClick: () => void }) {
   return (
-    <BaseHeart fill={theme.none} color={theme.hotPink} strokeDasharray={8} stroke={theme.black} strokeWidth={4}>
+    <BaseHeart
+      classes={[styles.interactive]}
+      fill={theme.none}
+      color={theme.hotPink}
+      strokeDasharray={8}
+      stroke={theme.black}
+      strokeWidth={4}
+      onClick={onClick}
+    >
       <TwoLineText line1={'SEND'} line2={'TO?'} />
     </BaseHeart>
   )
@@ -416,8 +441,4 @@ export function TextHeart({ heartType }: TextHeartProps) {
     : heartType < 23
     ? IdMintYou()
     : SimpForYou()
-}
-
-function SVGImage(svg: string) {
-  return <img className={styles.heart} src={svgToMiniDataURI(svg)} />
 }

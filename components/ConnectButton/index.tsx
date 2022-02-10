@@ -1,10 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { hexStripZeros } from '@ethersproject/bytes'
-import { Network } from '@web3-react/network'
-import usePriorityConnectorHooks from 'hooks/usePriorityConnectorHooks'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ALL_SUPPORTED_CHAIN_IDS } from 'types'
+import { useAccount, useConnect, useNetwork } from 'wagmi'
 
 import ConnectorModal from '../ConnectorModal'
 import styles from './ConnectButton.module.scss'
@@ -12,25 +11,32 @@ import styles from './ConnectButton.module.scss'
 export default function ConnectButton() {
   const [open, setOpen] = useState(false)
   const router = useRouter()
-  const hooks = usePriorityConnectorHooks()
-  const isActive = hooks.usePriorityIsActive()
-  const isActivating = hooks.usePriorityIsActivating()
-  const chainId = hooks.usePriorityChainId()
-  const connector = hooks.usePriorityConnector()
-
+  const [{ loading, error }] = useAccount()
+  const [
+    {
+      data: { connector },
+    },
+  ] = useConnect()
+  const [{ data: network }] = useNetwork()
+  console.log(connector, error)
   const toggleConnectionModal = useCallback(() => setOpen(!open), [open])
 
   useEffect(() => {
-    if (isActive && chainId === 1 && !(connector instanceof Network)) {
+    // todo: && !(connector instanceof Network)
+    if (!loading && network.chain?.id && ALL_SUPPORTED_CHAIN_IDS.includes(network.chain?.id)) {
       router.push('/mint')
     }
-  }, [connector, chainId, isActive, router])
+  }, [network.chain?.id, loading, router])
 
-  const wrongChain = useMemo(() => chainId && !ALL_SUPPORTED_CHAIN_IDS.includes(chainId), [chainId])
+  const wrongChain = useMemo(
+    () => network.chain?.id && !ALL_SUPPORTED_CHAIN_IDS.includes(network.chain?.id),
+    [network.chain?.id]
+  )
   const switchToMainnet = useCallback(() => {
-    if (connector.provider) {
+    if (connector) {
+      const provider = connector.getProvider()
       const formattedChainId = hexStripZeros(BigNumber.from(1).toHexString())
-      connector.provider
+      provider
         ?.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: formattedChainId }] })
         .then(console.log)
         .catch(console.error)
@@ -47,8 +53,8 @@ export default function ConnectButton() {
   return (
     <>
       {open && <ConnectorModal close={toggleConnectionModal} />}
-      <button className={styles.button} onClick={toggleConnectionModal} disabled={isActivating}>
-        {isActivating ? 'ACTIVATING...' : 'CONNECT WALLET'}
+      <button className={styles.button} onClick={toggleConnectionModal} disabled={loading}>
+        {loading ? 'ACTIVATING...' : 'CONNECT WALLET'}
       </button>
     </>
   )
