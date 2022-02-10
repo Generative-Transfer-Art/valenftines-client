@@ -1,7 +1,8 @@
-import { metaMask } from 'connectors/metaMask'
-import { walletConnect } from 'connectors/walletConnect'
 import Image from 'next/image'
 import { useCallback } from 'react'
+import { Connector, InjectedConnector, useConnect } from 'wagmi'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { WalletLinkConnector } from 'wagmi/connectors/walletLink'
 
 import styles from './ConnectorModal.module.scss'
 
@@ -9,10 +10,32 @@ interface ConnectorModalProps {
   close: () => void
 }
 
-export default function ConnectorModal({ close }: ConnectorModalProps) {
-  const connectMetamask = useCallback(() => metaMask.activate(1).then(close), [close])
-  const connectWalletConnect = useCallback(() => walletConnect.activate(1).then(close), [close])
+function ConnectorImage({ connector }: { connector: Connector<any, any> }) {
+  let src = ''
+  let alt = ''
+  if (connector instanceof InjectedConnector) {
+    src = '/metamaskIcon.png'
+    alt = 'MetaMask icon'
+  } else if (connector instanceof WalletConnectConnector) {
+    src = '/walletConnectIcon.svg'
+    alt = 'WalletConnect icon'
+  } else if (connector instanceof WalletLinkConnector) {
+    src = '/coinbaseWalletIcon.svg'
+    alt = 'Coinbase Wallet icon'
+  }
+  return <Image src={src} alt={alt} width={24} height={24} />
+}
 
+export default function ConnectorModal({ close }: ConnectorModalProps) {
+  const [{ data, error }, connect] = useConnect()
+
+  const handleConnect = useCallback(
+    (connector: Connector<any, any>) => {
+      connect(connector)
+      close()
+    },
+    [close, connect]
+  )
   return (
     <div className={styles.wrapper} onClick={close}>
       <div className={styles.innerWrapper} onClick={(e) => e.stopPropagation()}>
@@ -22,18 +45,18 @@ export default function ConnectorModal({ close }: ConnectorModalProps) {
             💔
           </div>
         </div>
-        <button className={styles.connectorRow} onClick={connectMetamask}>
-          <div>MetaMask</div>
-          <Image src="/metamaskIcon.png" alt="MetaMask icon" width={24} height={24} />
-        </button>
-        <button className={styles.connectorRow} onClick={connectWalletConnect}>
-          <div>WalletConnect</div>
-          <Image src="/walletConnectIcon.svg" alt="WalletConnect icon" width={24} height={24} />
-        </button>
-        {/* <button className={styles.connectorRow} onClick={() => connect()}>
-          <div>Coinbase Wallet</div>
-          <Image src="/coinbaseWalletIcon.svg" alt="Coinbase Wallet icon" width={24} height={24} />
-        </button> */}
+        {data.connectors.map((connector) => (
+          <button
+            className={styles.connectorRow}
+            onClick={() => handleConnect(connector)}
+            key={connector.id}
+            disabled={!connector.ready}
+          >
+            <div>{connector.name}</div>
+            <ConnectorImage connector={connector} />
+          </button>
+        ))}
+        {error && <div className={styles.error}>{error?.message ?? 'Failed to connect'}</div>}
       </div>
     </div>
   )
