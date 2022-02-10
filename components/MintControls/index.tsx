@@ -2,6 +2,7 @@ import { parseEther } from '@ethersproject/units'
 import { Valenftines } from 'abis/types'
 import ValenftinesAbi from 'abis/Valenftines.json'
 import { useAtomValue } from 'jotai/utils'
+import { mintCostETH } from 'lib/mintCost'
 import Link from 'next/link'
 import { mintAtom, PAGE_STATE } from 'pages/mint'
 import { useCallback, useMemo, useState } from 'react'
@@ -25,7 +26,8 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
 
   const mintEthPrice = useMemo(() => {
     const { id1, id2, id3 } = mintState
-    return (id1 + id2 + id3).toString()
+    const cost = mintCostETH(id1) + mintCostETH(id2) + mintCostETH(id3)
+    return cost.toString()
   }, [mintState])
 
   const valeNFTinesContract = useContract<Valenftines>({

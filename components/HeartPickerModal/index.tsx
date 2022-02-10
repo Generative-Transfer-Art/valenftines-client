@@ -7,20 +7,20 @@ interface HeartPickerModalProps {
 }
 
 export default function HeartPickerModal({ selectHeart }: HeartPickerModalProps) {
-  const tier1Hearts = new Array(10).map((i) => {
+  const tier1Hearts = new Array(10).fill(1).map(function (_, i) {
     return (
-      <div className={styles.heart} onClick={() => selectHeart(i + 1)} key={i}>
+      <div key={i} className={styles.heart} onClick={() => selectHeart(i + 1)}>
         {' '}
-        <Hearts.TextHeart heartType={i + 1} key={i} />{' '}
+        <Hearts.TextHeart heartType={i + 1} />{' '}
       </div>
     )
   })
 
-  const tier2Hearts = new Array(7).map((i) => {
+  const tier2Hearts = new Array(10).fill(7).map(function (_, i) {
     return (
-      <div className={styles.heart} onClick={() => selectHeart(i + 11)} key={i}>
+      <div key={i} className={styles.heart} onClick={() => selectHeart(i + 11)}>
         {' '}
-        <Hearts.TextHeart heartType={i + 11} key={i} />{' '}
+        <Hearts.TextHeart heartType={i + 11} />{' '}
       </div>
     )
   })

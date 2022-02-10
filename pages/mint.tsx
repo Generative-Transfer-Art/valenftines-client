@@ -4,7 +4,6 @@ import MintControls from 'components/MintControls'
 import SendTo from 'components/SendTo'
 import { atom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
-import { mintCostETH } from 'lib/mintCost'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
@@ -24,9 +23,9 @@ export interface MintState {
 
 export const mintAtom = atom<MintState>({
   recipient: '',
-  id1: 1,
-  id2: 2,
-  id3: 3,
+  id1: 0,
+  id2: 0,
+  id3: 0,
 })
 
 export default function Mint() {
@@ -34,12 +33,6 @@ export default function Mint() {
   const [pageState, setPageState] = useState(PAGE_STATE.READY)
 
   const { id1, id2, id3 } = useAtomValue(mintAtom)
-
-  const mintEthPrice: number = useMemo(() => {
-    return mintCostETH(id1) + mintCostETH(id2) + mintCostETH(id3)
-  }, [id1, id2, id3])
-
-  console.log('price: ', mintEthPrice)
 
   const layoutMainClasses = useMemo(() => {
     switch (pageState) {
