@@ -354,7 +354,51 @@ interface TextHeartProps {
 }
 
 export function TextHeart({ heartType }: TextHeartProps) {
-  return SVGImage(heartSvgs.getTextHeartSVG(heartType))
+  return heartType < 2
+    ? Bullish4You()
+    : heartType < 3
+    ? BeMine()
+    : heartType < 4
+    ? ToTheMoon()
+    : heartType < 5
+    ? CoolCat()
+    : heartType < 6
+    ? CutiePie()
+    : heartType < 7
+    ? ZeroXZeroX()
+    : heartType < 8
+    ? BestFren()
+    : heartType < 9
+    ? BigFan()
+    : heartType < 10
+    ? Gm()
+    : heartType < 11
+    ? CoinBae()
+    : heartType < 12
+    ? SayIDAO()
+    : heartType < 13
+    ? Wagmi()
+    : heartType < 14
+    ? MyDegen()
+    : heartType < 15
+    ? PayMyTaxes()
+    : heartType < 16
+    ? UpOnly()
+    : heartType < 17
+    ? LilMfer()
+    : heartType < 18
+    ? OnboardMe()
+    : heartType < 19
+    ? LetsMerge()
+    : heartType < 20
+    ? HodlMe()
+    : heartType < 21
+    ? LooksRare()
+    : heartType < 22
+    ? WenRing()
+    : heartType < 23
+    ? IdMintYou()
+    : SimpForYou()
 }
 
 function SVGImage(svg: string) {
