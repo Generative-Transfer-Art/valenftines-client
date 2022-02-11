@@ -62,7 +62,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
   })
 
   const checkEarlyMinted = useCallback(async () => {
-    if (!accountData || !valeNFTinesContract) {
+    if (accountData == null || valeNFTinesContract == null || valeNFTinesContract.signer == null) {
       return
     }
     setHasEarlyMinted(await valeNFTinesContract.gtapEarlyMintClaimed(accountData.address))
@@ -101,8 +101,10 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
         setTxHash(transaction.hash)
         await transaction.wait()
         const filter = valeNFTinesContract.filters.Transfer(null, accountData.address)
-        valeNFTinesContract.once(filter, (_from, _to, id) => setValentineId(id.toString()))
-        setPageState(PAGE_STATE.COMPLETE)
+        valeNFTinesContract.once(filter, (_from, _to, id) => {
+          setValentineId(id.toString())
+          setPageState(PAGE_STATE.COMPLETE)
+        })
       } catch (error) {
         setPageState(PAGE_STATE.ERROR)
         console.error(error)
@@ -137,7 +139,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
         <div>
           {mintLive || isEarlyMinter ? (
             <div>
-              {hasEarlyMinted && isEarlyMinter ? (
+              {hasEarlyMinted && !mintLive ? (
                 <button className={styles.mintButton} disabled={true}>
                   early mint claimed!
                 </button>
