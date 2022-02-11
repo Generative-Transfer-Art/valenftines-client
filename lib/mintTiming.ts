@@ -1,12 +1,13 @@
 const MINT_START_TIMESTAMP = 1644746400
 const MINT_END_TIMESTAMP = 1644926340
 
-export const isMintStarted = () => {
-  return getCurTimestampSeconds() > MINT_START_TIMESTAMP
+export const isEarlyMint = () => {
+  return getCurTimestampSeconds() < MINT_START_TIMESTAMP
 }
 
-export const isMintEnded = () => {
-  return getCurTimestampSeconds() > MINT_END_TIMESTAMP
+export const isMintLive = () => {
+  const t = getCurTimestampSeconds()
+  return MINT_START_TIMESTAMP < t && t < MINT_END_TIMESTAMP
 }
 
 const getCurTimestampSeconds = () => {

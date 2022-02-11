@@ -14,7 +14,7 @@ const BUFFER_ADDRESSES = snapshotAddressesForEnv().map((a) => toBuffer(a))
 const MERKLE_TREE = new MerkleTree(BUFFER_ADDRESSES)
 
 export const isEarlyMintEligble = (address: string): boolean => {
-  return snapshotAddressesForEnv().includes(address)
+  return snapshotAddressesForEnv().includes(address.toLocaleLowerCase())
 }
 
 export const earlyMintProofForAddress = (address: string): string[] => {
