@@ -8,6 +8,7 @@ import { useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
 
 export enum PAGE_STATE {
+  ERROR,
   READY,
   PENDING,
   COMPLETE,

@@ -11,7 +11,9 @@ import { mintAtom, PAGE_STATE } from 'pages/mint'
 import { useCallback, useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
 import { SupportedChainId } from 'types'
-import { useAccount, useContract, useNetwork } from 'wagmi'
+import { useAccount, useContract, useNetwork, useSigner } from 'wagmi'
+
+import { VALENFTINES_ADDRESS } from '../../constants'
 
 interface MintControlsProps {
   pageState: PAGE_STATE
@@ -31,12 +33,9 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
   }, [])
 
   const mintState = useAtomValue(mintAtom)
-  const [
-    {
-      data: { chain },
-    },
-  ] = useNetwork()
+  const [{ data: network }] = useNetwork()
   const [txHash, setTxHash] = useState<string | null>(null)
+  const [valentineId, setValentineId] = useState('')
 
   const mintEthPrice = useMemo(() => {
     const { id1, id2, id3 } = mintState
@@ -49,17 +48,25 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     return cost.toString()
   }, [mintState, isEarlyMinter])
 
+  const contractAddress = useMemo(
+    () => VALENFTINES_ADDRESS[(network.chain?.id as SupportedChainId) || SupportedChainId.MAINNET],
+    [network]
+  )
+
+  const [{ data: signer }] = useSigner()
   const valeNFTinesContract = useContract<Valenftines>({
-    addressOrName: '0x52270d8234b864dcAC9947f510CE9275A8a116Db',
+    addressOrName: contractAddress,
     contractInterface: JSON.stringify(ValenftinesAbi),
+    signerOrProvider: signer,
   })
+
   const readyToMint = useMemo(
-    () => chain?.id && mintState.recipient && mintState.id1 && mintState.id2 && mintState.id3,
-    [chain, mintState]
+    () => network.chain?.id && mintState.recipient && mintState.id1 && mintState.id2 && mintState.id3,
+    [network, mintState]
   )
   const mint = useCallback(async () => {
     const { recipient, id1, id2, id3 } = mintState
-    if (chain?.id && recipient && id1 && id2 && id3 && valeNFTinesContract) {
+    if (accountData?.address && network.chain?.id && recipient && id1 && id2 && id3 && valeNFTinesContract) {
       try {
         setPageState(PAGE_STATE.PENDING)
         let transaction: ContractTransaction
@@ -69,7 +76,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
             id1,
             id2,
             id3,
-            earlyMintProofForAddress(accountData!.address),
+            earlyMintProofForAddress(accountData.address),
             {
               value: parseEther(mintEthPrice),
             }
@@ -80,22 +87,37 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
           })
         }
         setTxHash(transaction.hash)
-        const receipt = await transaction.wait(1)
-        console.log('success!', receipt)
+        await transaction.wait()
+        const filter = valeNFTinesContract.filters.Transfer(null, accountData.address)
+        valeNFTinesContract.once(filter, (_from, _to, id) => setValentineId(id.toString()))
+        setPageState(PAGE_STATE.COMPLETE)
       } catch (error) {
+        setPageState(PAGE_STATE.ERROR)
         console.error(error)
       } finally {
-        setPageState(PAGE_STATE.COMPLETE)
         setTxHash(null)
       }
     }
-  }, [chain, mintEthPrice, mintState, setPageState, valeNFTinesContract, accountData, isEarlyMinter])
+  }, [accountData, isEarlyMinter, mintEthPrice, mintState, network, setPageState, valeNFTinesContract])
 
   const resetState = useCallback(() => {
     setPageState(PAGE_STATE.READY)
     setTxHash(null)
+    setValentineId('')
   }, [setPageState, setTxHash])
-  const etherscanLink = `https://${chain?.id === SupportedChainId.RINKEBY ? 'rinkeby.' : ''}etherscan.com/tx/${txHash}`
+
+  const etherscanLink = useMemo(
+    () => `https://${network.chain?.id === SupportedChainId.RINKEBY ? 'rinkeby.' : ''}etherscan.io/tx/${txHash}`,
+    [network, txHash]
+  )
+
+  const openseaLink = useMemo(
+    () =>
+      `https://${
+        network.chain?.id === SupportedChainId.RINKEBY ? 'testnets.' : ''
+      }opensea.io/assets/${contractAddress}/${valentineId}`,
+    [network, contractAddress, valentineId]
+  )
 
   return (
     <>
@@ -126,7 +148,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
           <button className={styles.mintButton} onClick={resetState}>
             SEND ANOTHER
           </button>
-          <Link href={`https://opensea.io`}>
+          <Link href={openseaLink}>
             <a className={styles.blackButton}>VIEW ON OPENSEA</a>
           </Link>
           <Link href={etherscanLink}>
