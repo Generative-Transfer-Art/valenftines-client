@@ -1,8 +1,8 @@
 export const rinkebySnapshot = {
   merkleRoot: '0x0eb11bee7f6d1d63b6204c8d73dc6a2b90c3292f76cfa07a9f39cd80904e9534',
   addresses: [
-    '0x48c89D77ae34Ae475e4523b25aB01e363dce5A78',
-    '0xbc3ed6B537f2980e66f396Fe14210A56ba3f72C4',
+    '0x48c89d77ae34ae475e4523b25ab01e363dce5a78',
+    '0xbc3ed6b537f2980e66f396fe14210a56ba3f72c4',
     '0xcc692d6e11268b40a1e3c58e3d86fc4caab9b77a',
   ],
 }

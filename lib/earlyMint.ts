@@ -1,7 +1,10 @@
-import { toBuffer } from 'ethereumjs-util'
-
+import { ethers } from 'ethers'
 import MerkleTree from './merkleTree'
 import { rinkebySnapshot, snapshot } from './snapshot'
+
+const toBuffer = (address: string) => {
+  return Buffer.from(ethers.utils.solidityKeccak256(['address'], [address]).substr(2), 'hex')
+}
 
 const snapshotAddressesForEnv = (): string[] => {
   if (process.env.NEXT_PUBLIC_ENV == 'rinkeby') {
