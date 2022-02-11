@@ -62,7 +62,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     if (chain?.id && recipient && id1 && id2 && id3 && valeNFTinesContract) {
       try {
         setPageState(PAGE_STATE.PENDING)
-        var transaction: ContractTransaction
+        let transaction: ContractTransaction
         if (isEarlyMinter) {
           transaction = await valeNFTinesContract.gtapMint(
             recipient,
@@ -89,7 +89,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
         setTxHash(null)
       }
     }
-  }, [chain, mintEthPrice, mintState, setPageState, valeNFTinesContract])
+  }, [chain, mintEthPrice, mintState, setPageState, valeNFTinesContract, accountData, isEarlyMinter])
 
   const resetState = useCallback(() => {
     setPageState(PAGE_STATE.READY)
