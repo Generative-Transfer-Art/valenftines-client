@@ -11,14 +11,14 @@ import styles from './ConnectButton.module.scss'
 export default function ConnectButton() {
   const [open, setOpen] = useState(false)
   const router = useRouter()
-  const [{ loading, error }] = useAccount()
+  const [{ loading }] = useAccount()
   const [
     {
       data: { connector },
     },
   ] = useConnect()
   const [{ data: network }] = useNetwork()
-  console.log(connector, error)
+
   const toggleConnectionModal = useCallback(() => setOpen(!open), [open])
 
   useEffect(() => {

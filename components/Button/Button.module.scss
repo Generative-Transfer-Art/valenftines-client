@@ -1,0 +1,35 @@
+.baseButton {
+  align-items: center;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  justify-content: center;
+  padding: 18px 20px;
+  width: 320px;
+
+  &:hover,
+  &:focus {
+    background: #9c0059;
+    border-radius: 16px;
+    box-shadow: var(--pink-shadow);
+  }
+
+  &:disabled {
+    background-color: hsla(326 96% 52% / 0.15);
+    border: 1px solid transparent;
+    box-shadow: unset;
+    color: var(--white);
+    cursor: not-allowed;
+    outline: none;
+  }
+}
+
+.blackButton {
+  background: var(--black);
+}
+
+.pinkButton {
+  background: var(--hot-pink);
+}

@@ -19,7 +19,6 @@ export default function SendToModal({ close }: SendToModalProps) {
 
   useEffect(() => {
     try {
-      console.log(isAddress(address))
       if (!isAddress(address) && address) {
         setError(true)
       } else {
