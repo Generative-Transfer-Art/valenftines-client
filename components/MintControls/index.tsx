@@ -8,7 +8,7 @@ import { mintCostETH } from 'lib/mintCost'
 import { isEarlyMint, isMintLive } from 'lib/mintTiming'
 import Link from 'next/link'
 import { mintAtom, PAGE_STATE } from 'pages/mint'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
 import { SupportedChainId } from 'types'
 import { useAccount, useContract, useNetwork, useSigner } from 'wagmi'
@@ -21,6 +21,7 @@ interface MintControlsProps {
 }
 
 export default function MintControls({ pageState, setPageState }: MintControlsProps) {
+  const [hasEarlyMinted, setHasEarlyMinted] = useState<boolean>()
   const [{ data: accountData }] = useAccount({
     fetchEns: false,
   })
@@ -59,6 +60,17 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     contractInterface: JSON.stringify(ValenftinesAbi),
     signerOrProvider: signer,
   })
+
+  const checkEarlyMinted = useCallback(async () => {
+    if (!accountData || !valeNFTinesContract) {
+      return
+    }
+    setHasEarlyMinted(await valeNFTinesContract.gtapEarlyMintClaimed(accountData.address))
+  }, [accountData, valeNFTinesContract])
+
+  useEffect(() => {
+    checkEarlyMinted()
+  }, [accountData, checkEarlyMinted, valeNFTinesContract])
 
   const readyToMint = useMemo(
     () => network.chain?.id && mintState.recipient && mintState.id1 && mintState.id2 && mintState.id3,
@@ -124,9 +136,17 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
       {pageState === PAGE_STATE.READY && (
         <div>
           {mintLive || isEarlyMinter ? (
-            <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
-              MINT {mintEthPrice.toString()} ETH
-            </button>
+            <div>
+              {hasEarlyMinted && isEarlyMinter ? (
+                <button className={styles.mintButton} disabled={true}>
+                  early mint claimed!
+                </button>
+              ) : (
+                <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
+                  MINT {mintEthPrice.toString()} ETH
+                </button>
+              )}
+            </div>
           ) : (
             <button className={styles.mintButton} disabled={true}>
               {' '}
