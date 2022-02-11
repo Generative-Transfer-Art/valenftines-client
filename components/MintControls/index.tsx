@@ -1,14 +1,17 @@
 import { parseEther } from '@ethersproject/units'
 import { Valenftines } from 'abis/types'
 import ValenftinesAbi from 'abis/Valenftines.json'
+import { ContractTransaction } from 'ethers'
 import { useAtomValue } from 'jotai/utils'
+import { earlyMintProofForAddress, isEarlyMintEligble } from 'lib/earlyMint'
 import { mintCostETH } from 'lib/mintCost'
+import { isEarlyMint, isMintLive } from 'lib/mintTiming'
 import Link from 'next/link'
 import { mintAtom, PAGE_STATE } from 'pages/mint'
 import { useCallback, useMemo, useState } from 'react'
 import styles from 'styles/Mint.module.scss'
 import { SupportedChainId } from 'types'
-import { useContract, useNetwork } from 'wagmi'
+import { useAccount, useContract, useNetwork } from 'wagmi'
 
 interface MintControlsProps {
   pageState: PAGE_STATE
@@ -16,6 +19,17 @@ interface MintControlsProps {
 }
 
 export default function MintControls({ pageState, setPageState }: MintControlsProps) {
+  const [{ data: accountData }] = useAccount({
+    fetchEns: false,
+  })
+  const isEarlyMinter = useMemo(() => {
+    return isEarlyMint() && accountData && isEarlyMintEligble(accountData.address)
+  }, [accountData])
+
+  const mintLive = useMemo(() => {
+    return isMintLive()
+  }, [])
+
   const mintState = useAtomValue(mintAtom)
   const [
     {
@@ -26,9 +40,14 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
 
   const mintEthPrice = useMemo(() => {
     const { id1, id2, id3 } = mintState
-    const cost = mintCostETH(id1) + mintCostETH(id2) + mintCostETH(id3)
+    let cost = mintCostETH(id1) + mintCostETH(id2) + mintCostETH(id3)
+
+    if (isEarlyMinter) {
+      cost = (cost * 50) / 100
+    }
+
     return cost.toString()
-  }, [mintState])
+  }, [mintState, isEarlyMinter])
 
   const valeNFTinesContract = useContract<Valenftines>({
     addressOrName: '0x52270d8234b864dcAC9947f510CE9275A8a116Db',
@@ -43,9 +62,23 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     if (chain?.id && recipient && id1 && id2 && id3 && valeNFTinesContract) {
       try {
         setPageState(PAGE_STATE.PENDING)
-        const transaction = await valeNFTinesContract.mint(recipient, id1, id2, id3, {
-          value: parseEther(mintEthPrice),
-        })
+        let transaction: ContractTransaction
+        if (isEarlyMinter) {
+          transaction = await valeNFTinesContract.gtapMint(
+            recipient,
+            id1,
+            id2,
+            id3,
+            earlyMintProofForAddress(accountData!.address),
+            {
+              value: parseEther(mintEthPrice),
+            }
+          )
+        } else {
+          transaction = await valeNFTinesContract.mint(recipient, id1, id2, id3, {
+            value: parseEther(mintEthPrice),
+          })
+        }
         setTxHash(transaction.hash)
         const receipt = await transaction.wait(1)
         console.log('success!', receipt)
@@ -56,7 +89,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
         setTxHash(null)
       }
     }
-  }, [chain, mintEthPrice, mintState, setPageState, valeNFTinesContract])
+  }, [chain, mintEthPrice, mintState, setPageState, valeNFTinesContract, accountData, isEarlyMinter])
 
   const resetState = useCallback(() => {
     setPageState(PAGE_STATE.READY)
@@ -67,9 +100,18 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
   return (
     <>
       {pageState === PAGE_STATE.READY && (
-        <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
-          MINT {mintEthPrice.toString()} ETH
-        </button>
+        <div>
+          {mintLive || isEarlyMinter ? (
+            <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
+              MINT {mintEthPrice.toString()} ETH
+            </button>
+          ) : (
+            <button className={styles.mintButton} disabled={true}>
+              {' '}
+              mint not open yet{' '}
+            </button>
+          )}
+        </div>
       )}
       {pageState === PAGE_STATE.PENDING && (
         <>
