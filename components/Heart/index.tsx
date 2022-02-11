@@ -58,7 +58,12 @@ function BaseHeart({
 
 export function ForFriendsAndLovers(props: BaseHeartProps) {
   return (
-    <BaseHeart {...props} fill={theme.purple} color={theme.hotPink} classes={[styles.float]}>
+    <BaseHeart
+      {...props}
+      fill={theme.purple}
+      color={theme.hotPink}
+      classes={[styles.float, ...(props.classes ? props.classes : [])]}
+    >
       <TwoLineText line1="4FRENS" line2="&LVRS" />
     </BaseHeart>
   )
@@ -66,7 +71,12 @@ export function ForFriendsAndLovers(props: BaseHeartProps) {
 
 export function ValeNFTines(props: BaseHeartProps) {
   return (
-    <BaseHeart {...props} fill={theme.yellow} color={theme.hotPink} classes={[styles.float]}>
+    <BaseHeart
+      {...props}
+      fill={theme.yellow}
+      color={theme.hotPink}
+      classes={[styles.float, ...(props.classes ? props.classes : [])]}
+    >
       <ThreeLineText line1="VALE" line2="NFT" line3="INES" />
     </BaseHeart>
   )
@@ -74,7 +84,12 @@ export function ValeNFTines(props: BaseHeartProps) {
 
 export function Feb14Only(props: BaseHeartProps) {
   return (
-    <BaseHeart {...props} fill={theme.blue} color={theme.hotPink} classes={[styles.float]}>
+    <BaseHeart
+      {...props}
+      fill={theme.blue}
+      color={theme.hotPink}
+      classes={[styles.float, ...(props.classes ? props.classes : [])]}
+    >
       <TwoLineText line1="FEB14" line2="ONLY" />
     </BaseHeart>
   )
@@ -273,30 +288,30 @@ export function IdMintYou(props: BaseHeartProps) {
 }
 
 export const BACKGROUND_HEARTS = [
-  <Gm key="Gm" />,
-  <ZeroXZeroX key="ZeroXZeroX" />,
-  <Wagmi key="Wagmi" />,
-  <Bullish4You key="Bullish4You" />,
-  <BeMine key="BeMine" />,
-  <ToTheMoon key="ToTheMoon" />,
-  <CallMe key="CallMe" />,
-  <CoolCat key="CoolCat" />,
-  <CutiePie key="CutiePie" />,
-  <BestFren key="BestFren" />,
-  <BigFan key="BigFan" />,
-  <CoinBae key="CoinBae" />,
-  <SayIDAO key="SayIDAO" />,
-  <MyDegen key="MyDegen" />,
-  <PayMyTaxes key="PayMyTaxes" />,
-  <UpOnly key="UpOnly" />,
-  <LilMfer key="LilMfer" />,
-  <OnboardMe key="OnboardMe" />,
-  <LetsMerge key="LetsMerge" />,
-  <HodlMe key="HodlMe" />,
-  <LooksRare key="LooksRare" />,
-  <WenRing key="WenRing" />,
-  <SimpForYou key="SimpForYou" />,
-  <IdMintYou key="IdMintYou" />,
+  Gm,
+  ZeroXZeroX,
+  Wagmi,
+  Bullish4You,
+  BeMine,
+  ToTheMoon,
+  CallMe,
+  CoolCat,
+  CutiePie,
+  BestFren,
+  BigFan,
+  CoinBae,
+  SayIDAO,
+  MyDegen,
+  PayMyTaxes,
+  UpOnly,
+  LilMfer,
+  OnboardMe,
+  LetsMerge,
+  HodlMe,
+  LooksRare,
+  WenRing,
+  SimpForYou,
+  IdMintYou,
 ]
 interface OneLineTextProps {
   line1: string

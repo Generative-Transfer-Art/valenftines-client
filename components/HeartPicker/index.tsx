@@ -45,10 +45,10 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
       {presentHeartPicker && <HeartPickerModal close={toggleHeartPickerModal} selectHeart={(h) => setHeart(h)} />}
       <div className={styles.heartsWrapper}>
         <div className={styles.sendFromHeart}>
-          {accountData == null ? (
-            <Hearts.ConnectHeart onClick={() => setOpen(true)} classes={pickerHeartClass} />
-          ) : (
+          {accountData ? (
             <Hearts.AddressHeart address={accountData.address.slice(0, 6)} classes={pickerHeartClass} />
+          ) : (
+            <Hearts.ConnectHeart onClick={() => setOpen(true)} classes={pickerHeartClass} />
           )}
         </div>
         <div className={styles.sendToHeart}>
