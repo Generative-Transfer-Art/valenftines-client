@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+
 import MerkleTree from './merkleTree'
 import { rinkebySnapshot, snapshot } from './snapshot'
 

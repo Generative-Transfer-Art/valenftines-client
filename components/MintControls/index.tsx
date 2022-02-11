@@ -33,17 +33,6 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     return isMintLive()
   }, [])
 
-  const checkEarlyMinted = async () => {
-    if (!accountData || !valeNFTinesContract) {
-      return
-    }
-    setHasEarlyMinted(await valeNFTinesContract.gtapEarlyMintClaimed(accountData.address))
-  }
-
-  useEffect(() => {
-    checkEarlyMinted()
-  }, [accountData])
-
   const mintState = useAtomValue(mintAtom)
   const [{ data: network }] = useNetwork()
   const [txHash, setTxHash] = useState<string | null>(null)
@@ -71,6 +60,17 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     contractInterface: JSON.stringify(ValenftinesAbi),
     signerOrProvider: signer,
   })
+
+  const checkEarlyMinted = useCallback(async () => {
+    if (!accountData || !valeNFTinesContract) {
+      return
+    }
+    setHasEarlyMinted(await valeNFTinesContract.gtapEarlyMintClaimed(accountData.address))
+  }, [accountData, valeNFTinesContract])
+
+  useEffect(() => {
+    checkEarlyMinted()
+  }, [accountData, checkEarlyMinted, valeNFTinesContract])
 
   const readyToMint = useMemo(
     () => network.chain?.id && mintState.recipient && mintState.id1 && mintState.id2 && mintState.id3,
