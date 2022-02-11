@@ -19,11 +19,7 @@ interface MintControlsProps {
 
 export default function MintControls({ pageState, setPageState }: MintControlsProps) {
   const mintState = useAtomValue(mintAtom)
-  const [
-    {
-      data: { chain },
-    },
-  ] = useNetwork()
+  const [{ data: network }] = useNetwork()
   const [txHash, setTxHash] = useState<string | null>(null)
   const [valentineId, setValentineId] = useState('')
 
@@ -33,7 +29,11 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     return cost.toString()
   }, [mintState])
 
-  const contractAddress = useMemo(() => VALENFTINES_ADDRESS[chain?.id || SupportedChainId.MAINNET], [chain])
+  const contractAddress = useMemo(
+    () => VALENFTINES_ADDRESS[(network.chain?.id as SupportedChainId) || SupportedChainId.MAINNET],
+    [network]
+  )
+
   const [{ data: signer }] = useSigner()
   const [{ data: account }] = useAccount()
   const valeNFTinesContract = useContract<Valenftines>({
@@ -43,12 +43,12 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
   })
 
   const readyToMint = useMemo(
-    () => chain?.id && mintState.recipient && mintState.id1 && mintState.id2 && mintState.id3,
-    [chain, mintState]
+    () => network.chain?.id && mintState.recipient && mintState.id1 && mintState.id2 && mintState.id3,
+    [network, mintState]
   )
   const mint = useCallback(async () => {
     const { recipient, id1, id2, id3 } = mintState
-    if (chain?.id && recipient && id1 && id2 && id3 && valeNFTinesContract) {
+    if (network.chain?.id && recipient && id1 && id2 && id3 && valeNFTinesContract) {
       try {
         setPageState(PAGE_STATE.PENDING)
         const transaction = await valeNFTinesContract.mint(recipient, id1, id2, id3, {
@@ -65,7 +65,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
         setTxHash(null)
       }
     }
-  }, [account, chain, mintEthPrice, mintState, setPageState, valeNFTinesContract])
+  }, [account, network, mintEthPrice, mintState, setPageState, valeNFTinesContract])
 
   const resetState = useCallback(() => {
     setPageState(PAGE_STATE.READY)
@@ -74,16 +74,16 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
   }, [setPageState, setTxHash])
 
   const etherscanLink = useMemo(
-    () => `https://${chain?.id === SupportedChainId.RINKEBY ? 'rinkeby.' : ''}etherscan.io/tx/${txHash}`,
-    [chain, txHash]
+    () => `https://${network.chain?.id === SupportedChainId.RINKEBY ? 'rinkeby.' : ''}etherscan.io/tx/${txHash}`,
+    [network, txHash]
   )
 
   const openseaLink = useMemo(
     () =>
       `https://${
-        chain?.id === SupportedChainId.RINKEBY ? 'testnets.' : ''
+        network.chain?.id === SupportedChainId.RINKEBY ? 'testnets.' : ''
       }opensea.io/assets/${contractAddress}/${valentineId}`,
-    [chain, contractAddress, valentineId]
+    [network, contractAddress, valentineId]
   )
 
   return (
