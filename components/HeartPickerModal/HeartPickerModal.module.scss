@@ -1,4 +1,10 @@
 .content {
+  padding: 0;
+
+  @media (min-width: 768px) {
+    border-radius: 20px;
+    box-shadow: var(--pink-shadow);
+  }
 }
 
 .price {
@@ -14,10 +20,17 @@
 }
 
 .row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   padding: 24px 12px;
+  width: 100%;
 
   @media (min-width: 768px) {
-    padding: 28px 53px 56px 53px;
+    padding: 27px 50px 50px 50px;
+    min-width: 500px;
+    width: unset;
   }
 }
 
@@ -38,8 +51,9 @@
 }
 
 .heart {
-  width: 85px;
   cursor: pointer;
+  margin: 10px;
+  width: 85px;
 }
 
 .heartWrapper {
