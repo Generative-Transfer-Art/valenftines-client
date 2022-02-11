@@ -1,16 +1,20 @@
+.content {
+  background-color: var(--purple);
+}
+
 .addressInput {
   border-radius: 20px;
-  border: none;
   border: 1px solid transparent;
-
+  border: none;
   font-family: monospace;
   font-size: 24px;
   font-weight: 500;
   height: 60px;
   letter-spacing: 1px;
   padding: 1em;
-  width: 80%;
   transition: 200ms ease all;
+  width: 80%;
+  min-width: 348px;
 
   &:focus {
     border: 1px solid var(--hot-pink);
@@ -22,23 +26,24 @@
 
 .error {
   border: 2px solid red;
-  color: red;
   box-shadow: rgba(237, 47, 47, 0.15) 0px 4px 8px 0px;
+  color: red;
 }
 
 .saveAddressButton {
-  background-color: hsla(0 0% 0% / 0.15);
+  background-color: var(--black);
   border-radius: 16px;
   border: 1px solid transparent;
   color: white;
   cursor: pointer;
   font-family: monospace;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 500;
   letter-spacing: 1px;
   margin-top: 30px;
-  padding: 18px 87px;
+  padding: 18px 80px;
   transition: 200ms ease all;
+  min-width: 348px;
 
   &:hover,
   &:focus {
@@ -47,5 +52,24 @@
     box-shadow: rgba(47 128 237 / 0.15) 0px 4px 8px 0px;
     color: var(--hot-pink);
     outline: none;
+  }
+
+  &:disabled {
+    background-color: hsla(0 0% 0% / 0.15);
+    border: 1px solid transparent;
+    box-shadow: unset;
+    color: var(--white);
+    cursor: not-allowed;
+    outline: none;
+  }
+}
+
+.sendToHeart {
+  height: 146px;
+  width: 136px;
+
+  text {
+    font-size: 24px !important;
+    font-weight: 500 !important;
   }
 }

@@ -38,6 +38,7 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
     setPresentHeartPicker(true)
   }, [])
 
+  const pickerHeartClass = [styles.pickerHeart]
   return (
     <div>
       {open && <ConnectorModal close={toggleConnectionModal} />}
@@ -45,27 +46,39 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
       <div className={styles.heartsWrapper}>
         <div className={styles.sendFromHeart}>
           {accountData == null ? (
-            <Hearts.ConnectHeart onClick={() => setOpen(true)} />
+            <Hearts.ConnectHeart onClick={() => setOpen(true)} classes={pickerHeartClass} />
           ) : (
-            <Hearts.AddressHeart address={accountData.address.slice(0, 6)} />
+            <Hearts.AddressHeart address={accountData.address.slice(0, 6)} classes={pickerHeartClass} />
           )}
         </div>
         <div className={styles.sendToHeart}>
           {recipient == '' ? (
-            <Hearts.SendToHeart onClick={openAddressGetter} />
+            <Hearts.SendToHeart onClick={openAddressGetter} classes={pickerHeartClass} />
           ) : (
-            <Hearts.AddressHeart address={recipient.slice(0, 6)} />
+            <Hearts.AddressHeart address={recipient.slice(0, 6)} classes={pickerHeartClass} />
           )}
         </div>
 
         <div className={styles.heart1} onClick={() => present(1)}>
-          {heart1 == 0 ? <Hearts.SelectMessageHeart /> : <Hearts.TextHeart heartType={heart1} />}
+          {heart1 == 0 ? (
+            <Hearts.SelectMessageHeart classes={pickerHeartClass} />
+          ) : (
+            <Hearts.TextHeart heartType={heart1} classes={pickerHeartClass} />
+          )}
         </div>
         <div className={styles.heart2} onClick={() => present(2)}>
-          {heart2 == 0 ? <Hearts.SelectMessageHeart /> : <Hearts.TextHeart heartType={heart2} />}
+          {heart2 == 0 ? (
+            <Hearts.SelectMessageHeart classes={pickerHeartClass} />
+          ) : (
+            <Hearts.TextHeart heartType={heart2} classes={pickerHeartClass} />
+          )}
         </div>
         <div className={styles.heart3} onClick={() => present(3)}>
-          {heart3 == 0 ? <Hearts.SelectMessageHeart /> : <Hearts.TextHeart heartType={heart3} />}
+          {heart3 == 0 ? (
+            <Hearts.SelectMessageHeart classes={pickerHeartClass} />
+          ) : (
+            <Hearts.TextHeart heartType={heart3} classes={pickerHeartClass} />
+          )}
         </div>
       </div>
     </div>

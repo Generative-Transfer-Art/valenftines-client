@@ -1,26 +1,51 @@
-.heartPickerModalWrapper {
-  background-color: white;
-  float: left;
-  height: 90%;
-  left: 15%;
-  position: fixed;
-  width: 60%;
-  z-index: 1;
+.content {
 }
 
-.tier1HeartsWrapper {
-  background-color: #fff6ae;
-  height: 420px;
+.price {
+  color: var(--hot-pink);
+  font-family: Courier New;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 23px;
+  line-height: 24px;
+
+  text-align: center;
+  letter-spacing: 0.03em;
 }
 
-.tier2HeartsWrapper {
-  background-color: #a4ffca;
-  height: 300px;
+.row {
+  padding: 24px 12px;
+
+  @media (min-width: 768px) {
+    padding: 28px 53px 56px 53px;
+  }
+}
+
+.row:nth-of-type(1) {
+  background-color: var(--yellow);
+}
+
+.row:nth-of-type(2) {
+  background-color: var(--green);
+}
+
+.row:nth-of-type(3) {
+  background-color: var(--blue);
+}
+
+.row:nth-of-type(4) {
+  background-color: var(--purple);
 }
 
 .heart {
-  float: left;
-  &:hover {
-    cursor: pointer;
-  }
+  width: 85px;
+  cursor: pointer;
+}
+
+.heartWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 436px;
 }

@@ -1,23 +1,25 @@
 import CloseButton from 'components/CloseButton'
-import { PropsWithChildren } from 'react'
+import useKeyPress from 'hooks/useKeyPress'
+import { PropsWithChildren, useEffect } from 'react'
 
 import styles from './Modal.module.scss'
 
 interface ModalProps {
   close: () => void
-  contentClassName?: string
 }
 
-export default function Modal({ contentClassName, children, close }: PropsWithChildren<ModalProps>) {
-  const classes = [styles.innerWrapper]
-  if (contentClassName) {
-    classes.push(contentClassName)
-  }
+export default function Modal({ children, close }: PropsWithChildren<ModalProps>) {
+  const escPressed = useKeyPress('Escape')
+  useEffect(() => {
+    if (escPressed) {
+      close()
+    }
+  }, [close, escPressed])
   return (
     <div className={styles.wrapper} onClick={close}>
-      <div className={classes.join(' ')} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.innerWrapper} onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={close} />
-        <div className={styles.content}>{children}</div>
+        {children}
       </div>
     </div>
   )

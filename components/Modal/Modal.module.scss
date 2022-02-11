@@ -14,20 +14,19 @@
 }
 
 .innerWrapper {
-  background: var(--purple);
+  // full screen on mobile
   bottom: 0;
   left: 0;
-  padding: 50% 1em;
   position: fixed;
   right: 0;
   top: 0;
 
-  @media screen and (min-width: 768px) {
+  // floating modal in the middle
+  @media (min-width: 768px) {
     border-radius: 20px;
     bottom: unset;
     box-shadow: var(--pink-shadow);
     left: 50%;
-    padding: 2em;
     position: absolute;
     right: unset;
     top: 50%;
@@ -37,7 +36,27 @@
 
 .content {
   align-items: center;
+  background-color: var(--white);
+  bottom: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  left: 0;
+  padding: 80px 40px 40px 40px;
+  position: fixed;
+  right: 0;
+  top: 0;
+
+  @media (min-width: 768px) {
+    bottom: unset;
+    border-radius: 20px;
+    justify-content: center;
+    left: unset;
+    max-width: 420px;
+    padding: 40px;
+    position: unset;
+    right: unset;
+    top: unset;
+    width: 50vw;
+  }
 }
