@@ -1,8 +1,9 @@
 import { parseEther } from '@ethersproject/units'
 import { Valenftines } from 'abis/types'
 import ValenftinesAbi from 'abis/Valenftines.json'
+import { ContractTransaction } from 'ethers'
 import { useAtomValue } from 'jotai/utils'
-import { isEarlyMintEligble } from 'lib/earlyMint'
+import { earlyMintProofForAddress, isEarlyMintEligble } from 'lib/earlyMint'
 import { mintCostETH } from 'lib/mintCost'
 import { isEarlyMint, isMintLive } from 'lib/mintTiming'
 import Link from 'next/link'
@@ -61,9 +62,23 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     if (chain?.id && recipient && id1 && id2 && id3 && valeNFTinesContract) {
       try {
         setPageState(PAGE_STATE.PENDING)
-        const transaction = await valeNFTinesContract.mint(recipient, id1, id2, id3, {
-          value: parseEther(mintEthPrice),
-        })
+        var transaction: ContractTransaction
+        if (isEarlyMinter) {
+          transaction = await valeNFTinesContract.gtapMint(
+            recipient,
+            id1,
+            id2,
+            id3,
+            earlyMintProofForAddress(accountData!.address),
+            {
+              value: parseEther(mintEthPrice),
+            }
+          )
+        } else {
+          transaction = await valeNFTinesContract.mint(recipient, id1, id2, id3, {
+            value: parseEther(mintEthPrice),
+          })
+        }
         setTxHash(transaction.hash)
         const receipt = await transaction.wait(1)
         console.log('success!', receipt)
