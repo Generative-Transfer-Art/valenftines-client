@@ -4,6 +4,7 @@ import modalStyles from 'components/Modal/Modal.module.scss'
 import { useUpdateAtom } from 'jotai/utils'
 import { mintAtom } from 'pages/mint'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEnsLookup } from 'wagmi'
 
 import { SendToHeart } from '../Heart'
 import styles from './SendToModal.module.scss'
@@ -16,6 +17,7 @@ export default function SendToModal({ close }: SendToModalProps) {
   const setMintState = useUpdateAtom(mintAtom)
   const [address, setAddress] = useState('')
   const [error, setError] = useState(false)
+  const [{ data: recipientENS }] = useEnsLookup({ address })
 
   useEffect(() => {
     try {
@@ -59,6 +61,7 @@ export default function SendToModal({ close }: SendToModalProps) {
           title={error ? 'invalid address' : ''}
           onChange={({ target: { value } }) => setAddress(value)}
         />
+        {recipientENS && <i>❤️{recipientENS}❤️</i>}
         <button
           onClick={saveAddress}
           className={buttonClasses.join(' ')}
