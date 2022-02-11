@@ -1,3 +1,5 @@
+import Modal from 'components/Modal'
+import modalStyles from 'components/Modal/Modal.module.scss'
 import Image from 'next/image'
 import { useCallback } from 'react'
 import { Connector, InjectedConnector, useConnect } from 'wagmi'
@@ -37,14 +39,8 @@ export default function ConnectorModal({ close }: ConnectorModalProps) {
     [close, connect]
   )
   return (
-    <div className={styles.wrapper} onClick={close}>
-      <div className={styles.innerWrapper} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.header}>
-          <h2 className={styles.modalTitle}>Connect a wallet</h2>
-          <div onClick={close} className={styles.closeIcon}>
-            💔
-          </div>
-        </div>
+    <Modal close={close}>
+      <div className={[modalStyles.content, styles.content].join(' ')} onClick={(e) => e.stopPropagation()}>
         {data.connectors.map((connector) => (
           <button
             className={styles.connectorRow}
@@ -58,6 +54,6 @@ export default function ConnectorModal({ close }: ConnectorModalProps) {
         ))}
         {error && <div className={styles.error}>{error?.message ?? 'Failed to connect'}</div>}
       </div>
-    </div>
+    </Modal>
   )
 }

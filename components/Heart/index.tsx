@@ -21,7 +21,7 @@ const TEXT_STYLE = {
 }
 
 function BaseHeart({
-  classes,
+  classes = [],
   children,
   color = theme.white,
   fill = theme.black,
@@ -30,10 +30,6 @@ function BaseHeart({
   strokeWidth = 0,
   onClick,
 }: PropsWithChildren<BaseHeartProps>) {
-  let svgClasses = [styles.heart, styles.baseHeart]
-  if (classes) {
-    svgClasses = [...svgClasses, ...classes]
-  }
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +37,7 @@ function BaseHeart({
       y="0px"
       viewBox="0 0 162 162"
       xmlSpace="preserve"
-      className={svgClasses.join(' ')}
+      className={classes.join(' ')}
       onClick={onClick}
     >
       <g transform="translate(81,81)">
@@ -60,217 +56,217 @@ function BaseHeart({
   )
 }
 
-export function ForFriendsAndLovers() {
+export function ForFriendsAndLovers(props: BaseHeartProps) {
   return (
-    <BaseHeart fill={theme.purple} color={theme.hotPink} classes={[styles.float]}>
+    <BaseHeart {...props} fill={theme.purple} color={theme.hotPink} classes={[styles.float]}>
       <TwoLineText line1="4FRENS" line2="&LVRS" />
     </BaseHeart>
   )
 }
 
-export function ValeNFTines() {
+export function ValeNFTines(props: BaseHeartProps) {
   return (
-    <BaseHeart fill={theme.yellow} color={theme.hotPink} classes={[styles.float]}>
+    <BaseHeart {...props} fill={theme.yellow} color={theme.hotPink} classes={[styles.float]}>
       <ThreeLineText line1="VALE" line2="NFT" line3="INES" />
     </BaseHeart>
   )
 }
 
-export function Feb14Only() {
+export function Feb14Only(props: BaseHeartProps) {
   return (
-    <BaseHeart fill={theme.blue} color={theme.hotPink} classes={[styles.float]}>
+    <BaseHeart {...props} fill={theme.blue} color={theme.hotPink} classes={[styles.float]}>
       <TwoLineText line1="FEB14" line2="ONLY" />
     </BaseHeart>
   )
 }
 
-export function Gm() {
+export function Gm(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <OneLineText line1="GM" />
     </BaseHeart>
   )
 }
 
-export function ZeroXZeroX() {
+export function ZeroXZeroX(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <OneLineText line1="0x0x" />
     </BaseHeart>
   )
 }
 
-export function Wagmi() {
+export function Wagmi(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <OneLineText line1="WAGMI" />
     </BaseHeart>
   )
 }
 
-export function Bullish4You() {
+export function Bullish4You(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="BULLISH" line2="4YOU" />
     </BaseHeart>
   )
 }
 
-export function BeMine() {
+export function BeMine(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="BE" line2="MINE" />
     </BaseHeart>
   )
 }
 
-export function ToTheMoon() {
+export function ToTheMoon(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="2THE" line2="MOON" />
     </BaseHeart>
   )
 }
 
-export function CoolCat() {
+export function CoolCat(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="COOL" line2="CAT" />
     </BaseHeart>
   )
 }
 
-export function CutiePie() {
+export function CutiePie(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="CUTIE" line2="PIE" />
     </BaseHeart>
   )
 }
 
-export function BestFren() {
+export function BestFren(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="BEST" line2="FREN" />
     </BaseHeart>
   )
 }
 
-export function BigFan() {
+export function BigFan(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="BIG" line2="FAN" />
     </BaseHeart>
   )
 }
 
-export function CoinBae() {
+export function CoinBae(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="COIN" line2="BAE" />
     </BaseHeart>
   )
 }
 
-export function SayIDAO() {
+export function SayIDAO(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="SAY I" line2="DAO" />
     </BaseHeart>
   )
 }
 
-export function MyDegen() {
+export function MyDegen(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="MY" line2="DEGEN" />
     </BaseHeart>
   )
 }
 
-export function PayMyTaxes() {
+export function PayMyTaxes(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="PAY MY" line2="TAXES" />
     </BaseHeart>
   )
 }
 
-export function UpOnly() {
+export function UpOnly(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="UP" line2="ONLY" />
     </BaseHeart>
   )
 }
 
-export function LilMfer() {
+export function LilMfer(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="LIL" line2="MFER" />
     </BaseHeart>
   )
 }
 
-export function CallMe() {
+export function CallMe(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="CALL" line2="ME" />
     </BaseHeart>
   )
 }
 
-export function OnboardMe() {
+export function OnboardMe(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="ONBOARD" line2="ME" />
     </BaseHeart>
   )
 }
 
-export function LetsMerge() {
+export function LetsMerge(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="LETS" line2="MERGE" />
     </BaseHeart>
   )
 }
 
-export function HodlMe() {
+export function HodlMe(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="HODL" line2="ME" />
     </BaseHeart>
   )
 }
 
-export function LooksRare() {
+export function LooksRare(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="LOOKS" line2="RARE" />
     </BaseHeart>
   )
 }
 
-export function WenRing() {
+export function WenRing(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="WEN" line2="RING" />
     </BaseHeart>
   )
 }
 
-export function SimpForYou() {
+export function SimpForYou(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <TwoLineText line1="SIMP" line2="4U" />
     </BaseHeart>
   )
 }
 
-export function IdMintYou() {
+export function IdMintYou(props: BaseHeartProps) {
   return (
-    <BaseHeart>
+    <BaseHeart {...props}>
       <ThreeLineText line1="ID" line2="MINT" line3="YOU" />
     </BaseHeart>
   )
@@ -348,10 +344,10 @@ export function ThreeLineText({ line1, line2, line3 }: ThreeLineTextProps) {
   )
 }
 
-export function SelectMessageHeart() {
+export function SelectMessageHeart({ classes = [] }: { classes: string[] }) {
   return (
     <BaseHeart
-      classes={[styles.interactive]}
+      classes={[styles.interactive, ...classes]}
       fill={theme.none}
       color={theme.hotPink}
       strokeDasharray={8}
@@ -363,10 +359,10 @@ export function SelectMessageHeart() {
   )
 }
 
-export function SendToHeart({ onClick }: { onClick: () => void }) {
+export function SendToHeart({ onClick, classes = [] }: { classes?: string[]; onClick?: () => void }) {
   return (
     <BaseHeart
-      classes={[styles.interactive]}
+      classes={[onClick ? styles.interactive : '', ...classes]}
       fill={theme.none}
       color={theme.hotPink}
       strokeDasharray={8}
@@ -379,10 +375,10 @@ export function SendToHeart({ onClick }: { onClick: () => void }) {
   )
 }
 
-export function ConnectHeart({ onClick }: { onClick: () => void }) {
+export function ConnectHeart({ onClick, classes = [] }: { classes?: string[]; onClick?: () => void }) {
   return (
     <BaseHeart
-      classes={[styles.interactive]}
+      classes={[styles.interactive, ...classes]}
       fill={theme.none}
       color={theme.hotPink}
       strokeDasharray={8}
@@ -397,64 +393,69 @@ export function ConnectHeart({ onClick }: { onClick: () => void }) {
 
 interface AddressHeartProps {
   address: string
+  classes?: string[]
 }
 
-export function AddressHeart({ address }: AddressHeartProps) {
+export function AddressHeart({ address, classes = [] }: AddressHeartProps) {
   return (
-    <BaseHeart fill={theme.white} color={theme.hotPink}>
+    <BaseHeart fill={theme.white} color={theme.hotPink} classes={classes}>
       <OneLineText line1={address} />
     </BaseHeart>
   )
 }
 
-interface TextHeartProps {
+interface TextHeartProps extends BaseHeartProps {
   heartType: number
 }
 
-export function TextHeart({ heartType }: TextHeartProps) {
-  return heartType < 2
-    ? Bullish4You()
-    : heartType < 3
-    ? BeMine()
-    : heartType < 4
-    ? ToTheMoon()
-    : heartType < 5
-    ? CoolCat()
-    : heartType < 6
-    ? CutiePie()
-    : heartType < 7
-    ? ZeroXZeroX()
-    : heartType < 8
-    ? BestFren()
-    : heartType < 9
-    ? BigFan()
-    : heartType < 10
-    ? Gm()
-    : heartType < 11
-    ? CoinBae()
-    : heartType < 12
-    ? SayIDAO()
-    : heartType < 13
-    ? Wagmi()
-    : heartType < 14
-    ? MyDegen()
-    : heartType < 15
-    ? PayMyTaxes()
-    : heartType < 16
-    ? UpOnly()
-    : heartType < 17
-    ? LilMfer()
-    : heartType < 18
-    ? OnboardMe()
-    : heartType < 19
-    ? LetsMerge()
-    : heartType < 20
-    ? HodlMe()
-    : heartType < 21
-    ? LooksRare()
-    : heartType < 22
-    ? WenRing()
-    : heartType < 23
-    ? IdMintYou()
-    : SimpForYou()
+export function TextHeart({ heartType, ...rest }: TextHeartProps) {
+  switch (heartType) {
+    case 1:
+      return <Bullish4You {...rest} />
+    case 2:
+      return <BeMine {...rest} />
+    case 3:
+      return <ToTheMoon {...rest} />
+    case 4:
+      return <CoolCat {...rest} />
+    case 5:
+      return <CutiePie {...rest} />
+    case 6:
+      return <ZeroXZeroX {...rest} />
+    case 7:
+      return <BestFren {...rest} />
+    case 8:
+      return <BigFan {...rest} />
+    case 9:
+      return <Gm {...rest} />
+    case 10:
+      return <CoinBae {...rest} />
+    case 11:
+      return <SayIDAO {...rest} />
+    case 12:
+      return <Wagmi {...rest} />
+    case 13:
+      return <MyDegen {...rest} />
+    case 14:
+      return <PayMyTaxes {...rest} />
+    case 15:
+      return <UpOnly {...rest} />
+    case 16:
+      return <LilMfer {...rest} />
+    case 17:
+      return <OnboardMe {...rest} />
+    case 18:
+      return <LetsMerge {...rest} />
+    case 19:
+      return <HodlMe {...rest} />
+    case 20:
+      return <LooksRare {...rest} />
+    case 21:
+      return <WenRing {...rest} />
+    case 22:
+      return <IdMintYou {...rest} />
+    case 23:
+    default:
+      return <SimpForYou {...rest} />
+  }
 }
