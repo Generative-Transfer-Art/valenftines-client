@@ -7,7 +7,7 @@ export const isEarlyMint = () => {
 
 export const isMintLive = () => {
   const t = getCurTimestampSeconds()
-  return MINT_START_TIMESTAMP < t && t < getCurTimestampSeconds()
+  return MINT_START_TIMESTAMP < t && t < MINT_END_TIMESTAMP
 }
 
 const getCurTimestampSeconds = () => {
