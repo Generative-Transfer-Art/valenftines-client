@@ -2,7 +2,7 @@ import { isAddress } from '@ethersproject/address'
 import Modal from 'components/Modal'
 import modalStyles from 'components/Modal/Modal.module.scss'
 import { useUpdateAtom } from 'jotai/utils'
-import { mintAtom } from 'pages/mint'
+import { mintAtom } from 'pages'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useEnsLookup } from 'wagmi'
 
