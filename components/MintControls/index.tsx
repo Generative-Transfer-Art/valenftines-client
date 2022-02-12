@@ -131,8 +131,6 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     [network, contractAddress, valentineId]
   )
 
-  console.log(etherscanLink, openseaLink)
-
   return (
     <>
       {pageState === PAGE_STATE.READY && (
