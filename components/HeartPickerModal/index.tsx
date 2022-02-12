@@ -27,12 +27,12 @@ export default function HeartPickerModal({ close, selectHeart }: HeartPickerModa
       />
     ))
   const tier3Hearts = new Array(5)
-    .fill(7)
+    .fill(5)
     .map((_, i) => (
       <Hearts.TextHeart
         classes={[styles.heart]}
-        heartType={i + 11}
-        onClick={() => selectHeart(i + 11)}
+        heartType={i + 18}
+        onClick={() => selectHeart(i + 18)}
         key={`tier-3-${i}`}
       />
     ))
