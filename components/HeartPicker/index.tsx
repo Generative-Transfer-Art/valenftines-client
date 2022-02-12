@@ -53,7 +53,12 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
           {recipient == '' ? (
             <Hearts.SendToHeart onClick={openAddressGetter} classes={pickerHeartClass} />
           ) : (
-            <Hearts.AddressHeart address={recipient.slice(0, 6)} classes={pickerHeartClass} />
+            <Hearts.AddressHeart
+              style={{ cursor: 'pointer' }}
+              address={recipient.slice(0, 6)}
+              classes={pickerHeartClass}
+              onClick={openAddressGetter}
+            />
           )}
         </div>
 

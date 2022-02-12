@@ -68,7 +68,9 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     if (accountData == null || valeNFTinesContract == null || valeNFTinesContract.signer == null) {
       return
     }
-    setHasEarlyMinted(await valeNFTinesContract.gtapEarlyMintClaimed(accountData.address))
+    const claimed = await valeNFTinesContract.gtapEarlyMintClaimed(accountData.address)
+    console.log('valeNFTinesContract.gtapEarlyMintClaimed(accountData.address)', claimed)
+    setHasEarlyMinted(claimed)
   }, [accountData, valeNFTinesContract])
 
   useEffect(() => {
@@ -181,17 +183,15 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
       case PAGE_STATE.PENDING:
         return 'PENDING...'
       case PAGE_STATE.READY:
-        if (earlyMintComplete) {
+        if (earlyMintLive && hasEarlyMinted) {
           return 'EARLY MINT CLAIMED!'
         }
         if (!publicMintLive) {
-          if (!earlyMintLive && !isEarlyMintLive) {
-            return 'MINT NOT OPEN YET'
-          }
+          return 'MINT NOT OPEN YET'
         }
         return `MINT ${mintEthPrice.toString()} ETH`
     }
-  }, [accountData, earlyMintComplete, earlyMintLive, mintEthPrice, pageState, publicMintLive])
+  }, [accountData, earlyMintLive, hasEarlyMinted, mintEthPrice, pageState, publicMintLive])
 
   const handleClick = useCallback(() => {
     if (!accountData) {

@@ -10,7 +10,6 @@ interface BaseHeartProps {
   strokeDasharray?: number
   stroke?: string
   strokeWidth?: number
-  onClick?: () => void
 }
 
 const TEXT_STYLE = {
@@ -28,7 +27,7 @@ function BaseHeart({
   strokeDasharray = 0,
   stroke = theme.none,
   strokeWidth = 0,
-  onClick,
+  ...rest
 }: PropsWithChildren<BaseHeartProps>) {
   return (
     <svg
@@ -38,7 +37,7 @@ function BaseHeart({
       viewBox="0 0 162 162"
       xmlSpace="preserve"
       className={classes.join(' ')}
-      onClick={onClick}
+      {...rest}
     >
       <g transform="translate(81,81)">
         <path
@@ -374,23 +373,32 @@ export function SelectMessageHeart({ classes = [] }: { classes: string[] }) {
   )
 }
 
-export function SendToHeart({ onClick, classes = [] }: { classes?: string[]; onClick?: () => void }) {
+type SendToHeartProps = BaseHeartProps &
+  Omit<React.SVGAttributes<SVGElement>, keyof BaseHeartProps> & {
+    classes?: string[]
+  }
+
+export function SendToHeart({ classes = [], ...rest }: SendToHeartProps) {
   return (
     <BaseHeart
-      classes={[onClick ? styles.interactive : '', ...classes]}
+      classes={[rest.onClick ? styles.interactive : '', ...classes]}
       fill={theme.none}
       color={theme.hotPink}
       strokeDasharray={8}
       stroke={theme.black}
       strokeWidth={4}
-      onClick={onClick}
+      {...rest}
     >
       <TwoLineText line1={'SEND'} line2={'TO?'} />
     </BaseHeart>
   )
 }
 
-export function ConnectHeart({ onClick, classes = [] }: { classes?: string[]; onClick?: () => void }) {
+type ConnectHeartProps = BaseHeartProps &
+  Omit<React.SVGAttributes<SVGElement>, keyof BaseHeartProps> & {
+    classes?: string[]
+  }
+export function ConnectHeart({ classes = [], ...rest }: ConnectHeartProps) {
   return (
     <BaseHeart
       classes={[styles.interactive, ...classes]}
@@ -399,29 +407,31 @@ export function ConnectHeart({ onClick, classes = [] }: { classes?: string[]; on
       strokeDasharray={8}
       stroke={theme.black}
       strokeWidth={4}
-      onClick={onClick}
+      {...rest}
     >
       <OneLineText line1={'CONNECT'} />
     </BaseHeart>
   )
 }
 
-interface AddressHeartProps {
-  address: string
-  classes?: string[]
-}
+type AddressHeartProps = BaseHeartProps &
+  Omit<React.SVGAttributes<SVGElement>, keyof BaseHeartProps> & {
+    address: string
+    classes?: string[]
+  }
 
-export function AddressHeart({ address, classes = [] }: AddressHeartProps) {
+export function AddressHeart({ address, classes = [], ...rest }: AddressHeartProps) {
   return (
-    <BaseHeart fill={theme.white} color={theme.hotPink} classes={classes}>
+    <BaseHeart fill={theme.white} color={theme.hotPink} classes={classes} {...rest}>
       <OneLineText line1={address} />
     </BaseHeart>
   )
 }
 
-interface TextHeartProps extends BaseHeartProps {
-  heartType: number
-}
+type TextHeartProps = BaseHeartProps &
+  Omit<React.SVGAttributes<SVGElement>, keyof BaseHeartProps> & {
+    heartType: number
+  }
 
 export function TextHeart({ heartType, ...rest }: TextHeartProps) {
   switch (heartType) {
