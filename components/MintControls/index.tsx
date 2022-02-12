@@ -161,8 +161,9 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     switch (pageState) {
       case PAGE_STATE.PENDING:
         return true
-      case PAGE_STATE.COMPLETE:
       case PAGE_STATE.ERROR:
+      case PAGE_STATE.COMPLETE:
+        return false
       case PAGE_STATE.READY:
         return earlyMintComplete || !readyToMint
     }
