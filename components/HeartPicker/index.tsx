@@ -1,8 +1,8 @@
-import ConnectorModal from 'components/ConnectorModal'
 import * as Hearts from 'components/Heart'
 import HeartPickerModal from 'components/HeartPickerModal'
 import { useAtom } from 'jotai'
-import { mintAtom } from 'pages'
+import { useUpdateAtom } from 'jotai/utils'
+import { connectModalOpenAtom, mintAtom } from 'pages'
 import { useCallback, useState } from 'react'
 import { useAccount } from 'wagmi'
 
@@ -13,8 +13,7 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
   const [presentHeartPicker, setPresentHeartPicker] = useState<boolean>(false)
   const toggleHeartPickerModal = useCallback(() => setPresentHeartPicker(!presentHeartPicker), [presentHeartPicker])
   const [selectedHeart, setSelectedHeart] = useState<number>(0)
-  const [open, setOpen] = useState(false)
-  const toggleConnectionModal = useCallback(() => setOpen(!open), [open])
+  const setConnectModalOpen = useUpdateAtom(connectModalOpenAtom)
   const [{ data: accountData }] = useAccount({
     fetchEns: false,
   })
@@ -41,14 +40,13 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
   const pickerHeartClass = [styles.pickerHeart]
   return (
     <div>
-      {open && <ConnectorModal close={toggleConnectionModal} />}
       {presentHeartPicker && <HeartPickerModal close={toggleHeartPickerModal} selectHeart={(h) => setHeart(h)} />}
       <div className={styles.heartsWrapper}>
         <div className={styles.sendFromHeart}>
           {accountData ? (
             <Hearts.AddressHeart address={accountData.address.slice(0, 6)} classes={pickerHeartClass} />
           ) : (
-            <Hearts.ConnectHeart onClick={() => setOpen(true)} classes={pickerHeartClass} />
+            <Hearts.ConnectHeart onClick={() => setConnectModalOpen(true)} classes={pickerHeartClass} />
           )}
         </div>
         <div className={styles.sendToHeart}>

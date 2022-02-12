@@ -1,19 +1,19 @@
 import { parseEther } from '@ethersproject/units'
 import { Valenftines } from 'abis/types'
 import ValenftinesAbi from 'abis/Valenftines.json'
+import Button from 'components/Button'
 import { ContractTransaction } from 'ethers'
-import { useAtomValue } from 'jotai/utils'
+import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { earlyMintProofForAddress, isEarlyMintEligble } from 'lib/earlyMint'
 import { mintCostETH } from 'lib/mintCost'
-import { isEarlyMint, isMintLive } from 'lib/mintTiming'
-import Link from 'next/link'
-import { mintAtom, PAGE_STATE } from 'pages'
+import { isEarlyMintLive, isPublicMintLive } from 'lib/mintTiming'
+import { connectModalOpenAtom, mintAtom, PAGE_STATE } from 'pages'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import styles from 'styles/Mint.module.scss'
-import { SupportedChainId } from 'types'
+import { ALL_SUPPORTED_CHAIN_IDS, SupportedChainId } from 'types'
 import { useAccount, useContract, useNetwork, useSigner } from 'wagmi'
 
 import { VALENFTINES_ADDRESS } from '../../constants'
+import styles from './MintControls.module.scss'
 
 interface MintControlsProps {
   pageState: PAGE_STATE
@@ -21,20 +21,21 @@ interface MintControlsProps {
 }
 
 export default function MintControls({ pageState, setPageState }: MintControlsProps) {
+  const setConnectModalOpen = useUpdateAtom(connectModalOpenAtom)
   const [hasEarlyMinted, setHasEarlyMinted] = useState<boolean>()
   const [{ data: accountData }] = useAccount({
     fetchEns: false,
   })
-  const isEarlyMinter = useMemo(() => {
-    return isEarlyMint() && accountData && isEarlyMintEligble(accountData.address)
-  }, [accountData])
-
-  const mintLive = useMemo(() => {
-    return isMintLive()
-  }, [])
+  const isEarlyMinter = useMemo(() => accountData && isEarlyMintEligble(accountData.address), [accountData])
+  const publicMintLive = useMemo(isPublicMintLive, [])
+  const earlyMintLive = useMemo(isEarlyMintLive, [])
 
   const mintState = useAtomValue(mintAtom)
   const [{ data: network }] = useNetwork()
+  const onSupportedNetwork = useMemo(
+    () => network.chain?.id && ALL_SUPPORTED_CHAIN_IDS.includes(network.chain.id),
+    [network]
+  )
   const [txHash, setTxHash] = useState<string | null>(null)
   const [valentineId, setValentineId] = useState('')
 
@@ -49,10 +50,12 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     return cost.toString()
   }, [mintState, isEarlyMinter])
 
-  const contractAddress = useMemo(
-    () => VALENFTINES_ADDRESS[(network.chain?.id as SupportedChainId) || SupportedChainId.MAINNET],
-    [network]
-  )
+  const contractAddress = useMemo(() => {
+    if (!onSupportedNetwork) {
+      return VALENFTINES_ADDRESS[SupportedChainId.MAINNET]
+    }
+    return VALENFTINES_ADDRESS[network.chain?.id as SupportedChainId]
+  }, [network.chain?.id, onSupportedNetwork])
 
   const [{ data: signer }] = useSigner()
   const valeNFTinesContract = useContract<Valenftines>({
@@ -73,10 +76,29 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
   }, [accountData, checkEarlyMinted, valeNFTinesContract])
 
   const readyToMint = useMemo(
-    () => network.chain?.id && mintState.recipient && mintState.id1 && mintState.id2 && mintState.id3,
-    [network, mintState]
+    () =>
+      network.chain?.id &&
+      ALL_SUPPORTED_CHAIN_IDS.includes(network.chain.id as SupportedChainId) &&
+      mintState.recipient &&
+      mintState.id1 &&
+      mintState.id2 &&
+      mintState.id3 &&
+      (publicMintLive || (isEarlyMinter && earlyMintLive)),
+    [
+      network.chain?.id,
+      mintState.recipient,
+      mintState.id1,
+      mintState.id2,
+      mintState.id3,
+      publicMintLive,
+      isEarlyMinter,
+      earlyMintLive,
+    ]
   )
   const mint = useCallback(async () => {
+    if (!readyToMint) {
+      return
+    }
     const { recipient, id1, id2, id3 } = mintState
     if (accountData?.address && network.chain?.id && recipient && id1 && id2 && id3 && valeNFTinesContract) {
       try {
@@ -101,16 +123,15 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
         setTxHash(transaction.hash)
         await transaction.wait()
         const filter = valeNFTinesContract.filters.Transfer(null, recipient)
-        valeNFTinesContract.once(filter, (_from, _to, id) => {
-          setValentineId(id.toString())
-          setPageState(PAGE_STATE.COMPLETE)
-        })
+        const [log] = await valeNFTinesContract.queryFilter(filter, -1, 'latest')
+        setValentineId(log.args.id.toString())
+        setPageState(PAGE_STATE.COMPLETE)
       } catch (error) {
         setPageState(PAGE_STATE.COMPLETE)
         console.error(error)
       }
     }
-  }, [accountData, isEarlyMinter, mintEthPrice, mintState, network, setPageState, valeNFTinesContract])
+  }, [accountData, isEarlyMinter, mintEthPrice, mintState, network, readyToMint, setPageState, valeNFTinesContract])
 
   const resetState = useCallback(() => {
     setPageState(PAGE_STATE.READY)
@@ -131,56 +152,74 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     [network, contractAddress, valentineId]
   )
 
+  const earlyMintComplete = useMemo(() => hasEarlyMinted && !publicMintLive, [hasEarlyMinted, publicMintLive])
+
+  const buttonDisabled = useMemo(() => {
+    if (!accountData) {
+      return false
+    }
+    switch (pageState) {
+      case PAGE_STATE.PENDING:
+        return true
+      case PAGE_STATE.ERROR:
+      case PAGE_STATE.COMPLETE:
+        return false
+      case PAGE_STATE.READY:
+        return earlyMintComplete || !readyToMint
+    }
+  }, [accountData, earlyMintComplete, pageState, readyToMint])
+
+  const buttonText = useMemo(() => {
+    if (!accountData) {
+      return 'CONNECT WALLET'
+    }
+    switch (pageState) {
+      case PAGE_STATE.COMPLETE:
+        return 'SEND ANOTHER'
+      case PAGE_STATE.ERROR:
+        return 'RETRY'
+      case PAGE_STATE.PENDING:
+        return 'PENDING...'
+      case PAGE_STATE.READY:
+        if (earlyMintComplete) {
+          return 'EARLY MINT CLAIMED!'
+        }
+        if (!publicMintLive) {
+          if (!earlyMintLive && !isEarlyMintLive) {
+            return 'MINT NOT OPEN YET'
+          }
+        }
+        return `MINT ${mintEthPrice.toString()} ETH`
+    }
+  }, [accountData, earlyMintComplete, earlyMintLive, mintEthPrice, pageState, publicMintLive])
+
+  const handleClick = useCallback(() => {
+    if (!accountData) {
+      return setConnectModalOpen(true)
+    }
+    switch (pageState) {
+      case PAGE_STATE.COMPLETE:
+      case PAGE_STATE.ERROR:
+        return resetState()
+      case PAGE_STATE.READY:
+        return mint()
+    }
+  }, [accountData, mint, setConnectModalOpen, resetState, pageState])
+
   return (
     <>
-      {pageState === PAGE_STATE.READY && (
-        <div>
-          {mintLive || isEarlyMinter ? (
-            <div>
-              {hasEarlyMinted && !mintLive ? (
-                <button className={styles.mintButton} disabled={true}>
-                  early mint claimed!
-                </button>
-              ) : (
-                <button className={styles.mintButton} disabled={!readyToMint} onClick={mint}>
-                  MINT {mintEthPrice.toString()} ETH
-                </button>
-              )}
-            </div>
-          ) : (
-            <button className={styles.mintButton} disabled={true}>
-              {' '}
-              mint not open yet{' '}
-            </button>
-          )}
-        </div>
-      )}
-      {pageState === PAGE_STATE.PENDING && (
-        <>
-          <button className={styles.blackButton}>PENDING...</button>
-          <Link href={etherscanLink}>
-            <a className={styles.blackButton} target="_blank">
-              VIEW ON ETHERSCAN
-            </a>
-          </Link>
-        </>
-      )}
+      <Button disabled={buttonDisabled} onClick={handleClick} className={styles.button}>
+        {buttonText}
+      </Button>
       {pageState === PAGE_STATE.COMPLETE && (
-        <>
-          <button className={styles.mintButton} onClick={resetState}>
-            SEND ANOTHER
-          </button>
-          <Link href={openseaLink}>
-            <a target="_blank" className={styles.blackButton}>
-              VIEW ON OPENSEA
-            </a>
-          </Link>
-          <Link href={etherscanLink}>
-            <a target="_blank" className={styles.blackButton}>
-              VIEW ON ETHERSCAN
-            </a>
-          </Link>
-        </>
+        <Button href={openseaLink} as="externalLink" styleType="black" className={styles.button}>
+          VIEW ON OPENSEA
+        </Button>
+      )}
+      {[PAGE_STATE.PENDING, PAGE_STATE.COMPLETE].includes(pageState) && (
+        <Button href={etherscanLink} as="externalLink" styleType="black" className={styles.button}>
+          VIEW ON ETHERSCAN
+        </Button>
       )}
     </>
   )
