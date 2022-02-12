@@ -1,3 +1,21 @@
 .button {
   margin: 0 auto 1em auto;
 }
+
+.earlyMintCopy {
+  text-align: center;
+  font-size: 0.9em;
+  margin-bottom: 1em;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+  }
+}
+
+.earlyMintLink {
+  color: var(--hot-pink);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -4,7 +4,7 @@
 
 .wrapper {
   max-width: 791px;
-  margin: 100px auto 0 auto;
+  margin: 30px auto 0 auto;
   width: 95%;
 
   p {
@@ -23,6 +23,7 @@
     grid-template-rows: 20px repeat(auto-fill, 160px);
     column-gap: 30px;
     row-gap: 12px;
+    margin: 100px auto 0 auto;
 
     p {
       grid-column: 1 / 2;

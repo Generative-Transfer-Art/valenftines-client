@@ -221,6 +221,28 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
           VIEW ON ETHERSCAN
         </Button>
       )}
+      {earlyMintLive && (
+        <div className={styles.earlyMintCopy}>
+          Early minting is live for{' '}
+          <a
+            href="https://discord.gg/b5zyYwzrNg"
+            rel="noopener noreferrer"
+            target="_blank"
+            className={styles.earlyMintLink}
+          >
+            Transfer Art
+          </a>{' '}
+          owners.{' '}
+          <a
+            href="https://twitter.com/WilsonCusack/status/1492375350332084224"
+            rel="noopener noreferrer"
+            target="_blank"
+            className={styles.earlyMintLink}
+          >
+            Public minting starts soon!
+          </a>
+        </div>
+      )}
     </>
   )
 }
