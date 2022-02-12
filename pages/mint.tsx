@@ -48,7 +48,7 @@ export default function Mint() {
       {addressGetterOpen && <SendToModal close={() => setAddressGetterOpen(false)} />}
       <div className={styles.wrapper}>
         <p>
-          Valenftines are messages, they can only be minted *to* another address. Select your favorite hearts, add the
+          Valenftines are messages minted *from* one address *to* another address. Select your favorite hearts, add the
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
         <HeartPicker openAddressGetter={() => setAddressGetterOpen(true)} />
