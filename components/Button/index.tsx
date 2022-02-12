@@ -1,9 +1,9 @@
 import Link, { LinkProps } from 'next/link'
+import { PropsWithChildren } from 'react'
 
 import styles from './Button.module.scss'
 
 type BaseProps = {
-  children: React.ReactNode
   className?: string
   styleType?: 'pink' | 'black'
 }
@@ -22,7 +22,7 @@ type ButtonAsExternal = BaseProps &
   }
 type ButtonProps = ButtonAsButton | ButtonAsLink | ButtonAsExternal
 
-export default function Button(props: ButtonProps) {
+export default function Button(props: PropsWithChildren<ButtonProps>) {
   const allClassNames = `${styles.baseButton} ${props.styleType === 'black' ? styles.black : styles.pink} ${
     props.className || ''
   }`
