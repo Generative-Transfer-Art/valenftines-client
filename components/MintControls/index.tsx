@@ -171,10 +171,14 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
             SEND ANOTHER
           </button>
           <Link href={openseaLink}>
-            <a className={styles.blackButton}>VIEW ON OPENSEA</a>
+            <a target="_blank" className={styles.blackButton}>
+              VIEW ON OPENSEA
+            </a>
           </Link>
           <Link href={etherscanLink}>
-            <a className={styles.blackButton}>VIEW ON ETHERSCAN</a>
+            <a target="_blank" className={styles.blackButton}>
+              VIEW ON ETHERSCAN
+            </a>
           </Link>
         </>
       )}
