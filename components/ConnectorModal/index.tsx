@@ -40,7 +40,7 @@ export default function ConnectorModal({ close }: ConnectorModalProps) {
   )
   return (
     <Modal close={close}>
-      <div className={[modalStyles.content, styles.content].join(' ')} onClick={(e) => e.stopPropagation()}>
+      <div className={modalStyles.content} id={styles.content} onClick={(e) => e.stopPropagation()}>
         {data.connectors.map((connector) => (
           <button
             className={styles.connectorRow}
