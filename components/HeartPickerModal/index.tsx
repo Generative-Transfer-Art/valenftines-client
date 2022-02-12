@@ -39,7 +39,7 @@ export default function HeartPickerModal({ close, selectHeart }: HeartPickerModa
 
   return (
     <Modal close={close}>
-      <div className={[modalStyles.content, styles.content].join(' ')}>
+      <div className={modalStyles.content} id={styles.content}>
         <div className={styles.row}>
           <h1 className={styles.price}>0.01 ETH</h1>
           <div className={styles.heartWrapper}>{tier1Hearts}</div>
