@@ -2,7 +2,7 @@ import ConnectorModal from 'components/ConnectorModal'
 import * as Hearts from 'components/Heart'
 import HeartPickerModal from 'components/HeartPickerModal'
 import { useAtom } from 'jotai'
-import { mintAtom } from 'pages/mint'
+import { mintAtom } from 'pages'
 import { useCallback, useState } from 'react'
 import { useAccount } from 'wagmi'
 

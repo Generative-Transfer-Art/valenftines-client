@@ -1,115 +1,80 @@
-import {
-  BACKGROUND_HEARTS,
-  BeMine,
-  Bullish4You,
-  CallMe,
-  CoolCat,
-  CutiePie,
-  Feb14Only,
-  ForFriendsAndLovers,
-  HodlMe,
-  LilMfer,
-  LooksRare,
-  MyDegen,
-  PayMyTaxes,
-  ToTheMoon,
-  UpOnly,
-  ValeNFTines,
-  Wagmi,
-  ZeroXZeroX,
-} from 'components/Heart'
+import HeartPicker from 'components/HeartPicker'
 import Layout from 'components/Layout'
-import type { NextPage } from 'next'
-import dynamic from 'next/dynamic'
-import styles from 'styles/Home.module.scss'
+import MintControls from 'components/MintControls'
+import SendToModal from 'components/SendToModal'
+import { atom } from 'jotai'
+import Link from 'next/link'
+import { useMemo, useState } from 'react'
+import styles from 'styles/Mint.module.scss'
 
-const heartClasses = [styles.heart]
-const ROW_1 = [
-  ...BACKGROUND_HEARTS.map((Heart, i) => <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.mapROW_1${i}`} />),
-  <Bullish4You classes={heartClasses} key="Bullish4You" />,
-  <BeMine classes={heartClasses} key="BeMine" />,
-  <ToTheMoon classes={heartClasses} key="ToTheMoon" />,
-  ...BACKGROUND_HEARTS.reverse().map((Heart, i) => (
-    <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.reverse_1 = ${i}`} />
-  )),
-]
+export enum PAGE_STATE {
+  ERROR,
+  READY,
+  PENDING,
+  COMPLETE,
+}
 
-const ROW_2 = [
-  ...BACKGROUND_HEARTS.map((Heart, i) => <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.mapROW_2${i}`} />),
-  <MyDegen classes={heartClasses} key="MyDegen" />,
-  <LooksRare classes={heartClasses} key="LooksRare" />,
-  <UpOnly classes={heartClasses} key="UpOnly" />,
-  ...BACKGROUND_HEARTS.reverse().map((Heart, i) => (
-    <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.reverseROW_2${i}`} />
-  )),
-]
+export interface MintState {
+  recipient: string
+  id1: number
+  id2: number
+  id3: number
+}
 
-const ROW_3 = [
-  ...BACKGROUND_HEARTS.map((Heart, i) => <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.mapROW_3${i}`} />),
-  <CallMe classes={heartClasses} key="CallMe" />,
-  <PayMyTaxes classes={heartClasses} key="PayMyTaxes" />,
-  <CutiePie classes={heartClasses} key="CutiePie" />,
-  <Bullish4You classes={heartClasses} key="Bullish4You" />,
-  ...BACKGROUND_HEARTS.reverse().map((Heart, i) => (
-    <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.reverseROW_3${i}`} />
-  )),
-]
+export const mintAtom = atom<MintState>({
+  recipient: '',
+  id1: 0,
+  id2: 0,
+  id3: 0,
+})
 
-const TITLE_ROW = [
-  ...BACKGROUND_HEARTS.map((Heart, i) => (
-    <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.mapTITLE_ROW${i}`} />
-  )),
-  <ForFriendsAndLovers classes={heartClasses} key="ForFriendsAndLovers" />,
-  <ValeNFTines classes={heartClasses} key="ValeNFTines" />,
-  <Feb14Only classes={heartClasses} key="Feb14Only" />,
-  ...BACKGROUND_HEARTS.reverse().map((Heart, i) => (
-    <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.reverseTITLE_ROW${i}`} />
-  )),
-]
+export default function Mint() {
+  const [addressGetterOpen, setAddressGetterOpen] = useState(false)
+  const [pageState, setPageState] = useState(PAGE_STATE.READY)
 
-const ROW_4 = [
-  ...BACKGROUND_HEARTS.map((Heart, i) => <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.mapROW_4${i}`} />),
-  <CallMe classes={heartClasses} key="CallMe" />,
-  <ZeroXZeroX classes={heartClasses} key="ZeroXZeroX" />,
-  <Wagmi classes={heartClasses} key="Wagmi" />,
-  <CallMe classes={heartClasses} key="CallMe" />,
-  ...BACKGROUND_HEARTS.reverse().map((Heart, i) => (
-    <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.reverseROW_4${i}`} />
-  )),
-]
+  const layoutMainClasses = useMemo(() => {
+    switch (pageState) {
+      case PAGE_STATE.READY:
+        return styles.main
+      case PAGE_STATE.PENDING:
+        return `${styles.main} ${styles.pendingLayout}`
+      case PAGE_STATE.COMPLETE:
+        return `${styles.main} ${styles.completeLayout}`
+    }
+  }, [pageState])
 
-const ROW_5 = [
-  ...BACKGROUND_HEARTS.map((Heart, i) => <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.mapROW_5${i}`} />),
-  <LilMfer classes={heartClasses} key="LilMfer" />,
-  <HodlMe classes={heartClasses} key="HodlMe" />,
-  <CoolCat classes={heartClasses} key="CoolCat" />,
-  ...BACKGROUND_HEARTS.reverse().map((Heart, i) => (
-    <Heart classes={heartClasses} key={`heart-BACKGROUND_HEARTS.reverseROW_5 ${i}`} />
-  )),
-]
-
-const ConnectButton = dynamic(() => import('components/ConnectButton'), { ssr: false })
-
-const Home: NextPage = () => {
   return (
-    <Layout mainClass={styles.main}>
+    <Layout mainClass={layoutMainClasses}>
+      {addressGetterOpen && <SendToModal close={() => setAddressGetterOpen(false)} />}
       <div className={styles.wrapper}>
-        <div className={styles.innerWrapper}>
-          <div className={styles.heartRow}>{ROW_1}</div>
-          <div className={styles.heartRow}>{ROW_2}</div>
-          <div className={styles.titleRow}>{TITLE_ROW}</div>
-          <div className={styles.heartRow}>{ROW_3}</div>
+        <p>
+          Valenftines are messages minted *from* one address *to* another address. Select your favorite hearts, add the
+          address of your friend/lover, mint, and the NFT will appear in their wallet.
+        </p>
+        <div>
+          <HeartPicker openAddressGetter={() => setAddressGetterOpen(true)} />
+          <MintControls setPageState={setPageState} pageState={pageState} />
         </div>
-        <div className={styles.controlRow}>
-          <ConnectButton />
-        </div>
-        <div className={styles.innerWrapper}>
-          <div className={styles.heartRow}>{ROW_4}</div>
-          <div className={styles.heartRow}>{ROW_5}</div>
-        </div>
+        <p>
+          Valenftines are transfer art, and they change when they move between wallets. If your recipient sends this NFT
+          back to you, it will upgrade from UNREQUITED to REQUITED and clone itself so you’ll both have a copy!
+        </p>
+        <p>
+          If your recipient does nothing, the UNREQUITED Valenftine will simply sit in their wallet, a token of your
+          affection.
+        </p>
+        <p>
+          If they send it to someone else (ouch!) the FROM address will switch from yours to theirs, and the TO address
+          will switch from theirs to the new recipient.
+        </p>
+        <p>
+          For more details, follow the project on{' '}
+          <Link href="https://twitter.com/valenftinesday">
+            <a className={styles.link}>Twitter</a>
+          </Link>
+          .
+        </p>
       </div>
     </Layout>
   )
 }
-
-export default Home
