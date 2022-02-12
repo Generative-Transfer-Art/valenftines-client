@@ -100,7 +100,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
         }
         setTxHash(transaction.hash)
         await transaction.wait()
-        const filter = valeNFTinesContract.filters.Transfer(null, accountData.address)
+        const filter = valeNFTinesContract.filters.Transfer(null, recipient)
         valeNFTinesContract.once(filter, (_from, _to, id) => {
           setValentineId(id.toString())
           setPageState(PAGE_STATE.COMPLETE)
