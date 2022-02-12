@@ -7,7 +7,7 @@
   justify-content: flex-start;
   left: 0;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   z-index: 2;
@@ -23,11 +23,8 @@
 
   // floating modal in the middle
   @media (min-width: 768px) {
-    border-radius: 20px;
     bottom: unset;
-    box-shadow: var(--pink-shadow);
     left: 50%;
-    position: absolute;
     right: unset;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -50,6 +47,7 @@
   @media (min-width: 768px) {
     bottom: unset;
     border-radius: 20px;
+    box-shadow: var(--pink-shadow);
     justify-content: center;
     left: unset;
     max-width: 420px;

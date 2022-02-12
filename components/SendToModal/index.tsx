@@ -50,7 +50,7 @@ export default function SendToModal({ close }: SendToModalProps) {
   }, [error])
   return (
     <Modal close={close}>
-      <div className={[modalStyles.content, styles.content].join(' ')}>
+      <div className={modalStyles.content} id={styles.content}>
         <SendToHeart classes={[styles.sendToHeart]} />
         <h1 className={styles.title}>Paste Eth Address</h1>
         <input
