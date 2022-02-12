@@ -10,13 +10,15 @@ interface ModalProps {
 
 export default function Modal({ children, close }: PropsWithChildren<ModalProps>) {
   const escPressed = useKeyPress('Escape')
+
   useEffect(() => {
     if (escPressed) {
       close()
     }
   }, [close, escPressed])
+
   return (
-    <div className={styles.wrapper} onClick={close}>
+    <div className={styles.wrapper} onClick={close} onScrollCapture={(e) => e.stopPropagation()}>
       <div className={styles.innerWrapper} onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={close} />
         {children}

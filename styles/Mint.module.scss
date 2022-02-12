@@ -1,10 +1,11 @@
 .main {
-  background-color: var(--pink);
+  background-color: var(--light-pink);
 }
 
 .wrapper {
   max-width: 791px;
   margin: 100px auto 0 auto;
+  width: 95%;
 
   p {
     font-size: 16px;

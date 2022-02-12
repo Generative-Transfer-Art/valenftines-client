@@ -19,19 +19,12 @@ export default function ConnectButton() {
   ] = useConnect()
   const [{ data: network }] = useNetwork()
 
-  const toggleConnectionModal = useCallback(() => setOpen(!open), [open])
-
   useEffect(() => {
-    // todo: && !(connector instanceof Network)
     if (!loading && network.chain?.id && ALL_SUPPORTED_CHAIN_IDS.includes(network.chain?.id)) {
       router.push('/mint')
     }
   }, [network.chain?.id, loading, router])
 
-  const wrongChain = useMemo(
-    () => network.chain?.id && !ALL_SUPPORTED_CHAIN_IDS.includes(network.chain?.id),
-    [network.chain?.id]
-  )
   const switchToMainnet = useCallback(() => {
     if (connector) {
       const provider = connector.getProvider()
@@ -42,19 +35,26 @@ export default function ConnectButton() {
         .catch(console.error)
     }
   }, [connector])
-  if (wrongChain) {
-    return (
-      <button className={styles.button} onClick={switchToMainnet}>
-        SWITCH TO ETH MAINNET
-      </button>
-    )
-  }
+
+  const wrongChain = useMemo(
+    () => network.chain?.id && !ALL_SUPPORTED_CHAIN_IDS.includes(network.chain?.id),
+    [network.chain?.id]
+  )
+
+  const handleButtonClick = useCallback(() => {
+    if (wrongChain && !loading) {
+      switchToMainnet()
+    }
+    if (!loading) {
+      setOpen(!open)
+    }
+  }, [loading, open, switchToMainnet, wrongChain])
 
   return (
     <>
-      {open && <ConnectorModal close={toggleConnectionModal} />}
-      <button className={styles.button} onClick={toggleConnectionModal} disabled={loading}>
-        {loading ? 'ACTIVATING...' : 'CONNECT WALLET'}
+      {open && <ConnectorModal close={() => setOpen(!open)} />}
+      <button className={styles.button} onClick={handleButtonClick} disabled={loading}>
+        {loading ? 'LOADING...' : wrongChain ? 'SWITCH TO ETH MAINNET' : 'CONNECT WALLET'}
       </button>
     </>
   )
