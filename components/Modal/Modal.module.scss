@@ -7,7 +7,7 @@
   justify-content: flex-start;
   left: 0;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   z-index: 2;
@@ -27,7 +27,6 @@
     bottom: unset;
     box-shadow: var(--pink-shadow);
     left: 50%;
-    position: absolute;
     right: unset;
     top: 50%;
     transform: translate(-50%, -50%);
