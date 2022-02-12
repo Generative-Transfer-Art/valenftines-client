@@ -51,8 +51,10 @@ export default function Mint() {
           Valenftines are messages minted *from* one address *to* another address. Select your favorite hearts, add the
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
-        <HeartPicker openAddressGetter={() => setAddressGetterOpen(true)} />
-        <MintControls setPageState={setPageState} pageState={pageState} />
+        <div>
+          <HeartPicker openAddressGetter={() => setAddressGetterOpen(true)} />
+          <MintControls setPageState={setPageState} pageState={pageState} />
+        </div>
         <p>
           Valenftines are transfer art, and they change when they move between wallets. If your recipient sends this NFT
           back to you, it will upgrade from UNREQUITED to REQUITED and clone itself so you’ll both have a copy!

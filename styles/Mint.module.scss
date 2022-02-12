@@ -16,6 +16,22 @@
       margin: 0;
     }
   }
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: repeat(auto-fill, 160px);
+    column-gap: 30px;
+    row-gap: 1em;
+
+    p {
+      grid-column: 1 / 2;
+    }
+
+    div {
+      grid-column: 2 / 3;
+    }
+  }
 }
 
 .link {
