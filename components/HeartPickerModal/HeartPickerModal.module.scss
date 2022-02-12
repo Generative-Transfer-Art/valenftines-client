@@ -4,11 +4,16 @@
   overflow-y: auto;
 
   @media (min-width: 768px) {
-    border-radius: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
     box-shadow: var(--pink-shadow);
-    max-height: 100vh;
+    max-height: 97vh;
     max-width: 500px;
+    overflow-y: scroll;
     overflow-x: hidden;
+    transform: translateY(3vh);
   }
 }
 
