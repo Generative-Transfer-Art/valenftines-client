@@ -106,10 +106,8 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
           setPageState(PAGE_STATE.COMPLETE)
         })
       } catch (error) {
-        setPageState(PAGE_STATE.ERROR)
+        setPageState(PAGE_STATE.COMPLETE)
         console.error(error)
-      } finally {
-        setTxHash(null)
       }
     }
   }, [accountData, isEarlyMinter, mintEthPrice, mintState, network, setPageState, valeNFTinesContract])
