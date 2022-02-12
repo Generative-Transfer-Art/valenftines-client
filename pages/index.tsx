@@ -48,6 +48,19 @@ export default function Mint() {
       {addressGetterOpen && <SendToModal close={() => setAddressGetterOpen(false)} />}
       <div className={styles.wrapper}>
         <p>
+          <div>
+            <Link href="https://twitter.com/valenftinesday" passHref>
+              <a className={styles.headerLink} target="_blank">
+                🐦 TWITTER
+              </a>
+            </Link>
+            &nbsp;&nbsp;
+            <Link href="https://opensea.io/collection/valenftines">
+              <a className={styles.headerLink} target="_blank">
+                🚢 OPENSEA
+              </a>
+            </Link>
+          </div>
           Valenftines are messages minted *from* one address *to* another address. Select your favorite hearts, add the
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
@@ -70,7 +83,9 @@ export default function Mint() {
         <p>
           For more details, follow the project on{' '}
           <Link href="https://twitter.com/valenftinesday">
-            <a className={styles.link}>Twitter</a>
+            <a className={styles.link} target="_blank">
+              Twitter
+            </a>
           </Link>
           .
         </p>

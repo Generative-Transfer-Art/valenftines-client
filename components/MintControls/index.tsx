@@ -159,7 +159,9 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
         <>
           <button className={styles.blackButton}>PENDING...</button>
           <Link href={etherscanLink}>
-            <a className={styles.blackButton}>VIEW ON ETHERSCAN</a>
+            <a className={styles.blackButton} target="_blank">
+              VIEW ON ETHERSCAN
+            </a>
           </Link>
         </>
       )}
