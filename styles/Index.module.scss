@@ -20,9 +20,9 @@
   @media (min-width: 768px) {
     display: grid;
     grid-template-columns: 50% 50%;
-    grid-template-rows: repeat(auto-fill, 160px);
+    grid-template-rows: 20px repeat(auto-fill, 160px);
     column-gap: 30px;
-    row-gap: 1em;
+    row-gap: 12px;
 
     p {
       grid-column: 1 / 2;
@@ -50,50 +50,6 @@
   &:focus {
     text-decoration: underline;
   }
-}
-
-.mintButton {
-  align-items: center;
-  background-color: var(--hot-pink);
-  border-radius: 16px;
-  border: 1px solid transparent;
-  color: var(--white);
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  font-family: monospace;
-  font-size: 23px;
-  font-style: normal;
-  font-weight: 500;
-  height: 60px;
-  justify-content: center;
-  letter-spacing: 1px;
-  line-height: 24px;
-  margin: 1.5em auto;
-  padding: 18px 20px;
-  transition: 200ms ease all;
-  width: 320px;
-
-  &:hover,
-  &:focus {
-    background-color: transparent;
-    border: 1px solid var(--hot-pink);
-    box-shadow: rgba(47 128 237 / 0.15) 0px 4px 8px 0px;
-    color: var(--hot-pink);
-    outline: none;
-  }
-
-  &:disabled {
-    background-color: hsla(326 96% 52% / 0.15);
-    border: 1px solid transparent;
-    box-shadow: unset;
-    color: var(--white);
-    cursor: not-allowed;
-    outline: none;
-  }
-}
-
-.pendingButton {
 }
 
 .pendingLayout {

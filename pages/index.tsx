@@ -1,11 +1,12 @@
+import ConnectorModal from 'components/ConnectorModal'
 import HeartPicker from 'components/HeartPicker'
 import Layout from 'components/Layout'
 import MintControls from 'components/MintControls'
 import SendToModal from 'components/SendToModal'
-import { atom } from 'jotai'
+import { atom, useAtom } from 'jotai'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
-import styles from 'styles/Mint.module.scss'
+import styles from 'styles/Index.module.scss'
 
 export enum PAGE_STATE {
   ERROR,
@@ -21,6 +22,8 @@ export interface MintState {
   id3: number
 }
 
+export const connectModalOpenAtom = atom<boolean>(false)
+
 export const mintAtom = atom<MintState>({
   recipient: '',
   id1: 0,
@@ -30,37 +33,40 @@ export const mintAtom = atom<MintState>({
 
 export default function Mint() {
   const [addressGetterOpen, setAddressGetterOpen] = useState(false)
+  const [connectModalOpen, setConnectModalOpen] = useAtom(connectModalOpenAtom)
   const [pageState, setPageState] = useState(PAGE_STATE.READY)
 
   const layoutMainClasses = useMemo(() => {
     switch (pageState) {
-      case PAGE_STATE.READY:
-        return styles.main
       case PAGE_STATE.PENDING:
         return `${styles.main} ${styles.pendingLayout}`
       case PAGE_STATE.COMPLETE:
         return `${styles.main} ${styles.completeLayout}`
+      case PAGE_STATE.READY:
+      default:
+        return styles.main
     }
   }, [pageState])
 
   return (
     <Layout mainClass={layoutMainClasses}>
       {addressGetterOpen && <SendToModal close={() => setAddressGetterOpen(false)} />}
+      {connectModalOpen && <ConnectorModal close={() => setConnectModalOpen(false)} />}
       <div className={styles.wrapper}>
         <p>
-          <div>
-            <Link href="https://twitter.com/valenftinesday" passHref>
-              <a className={styles.headerLink} target="_blank">
-                🐦 TWITTER
-              </a>
-            </Link>
-            &nbsp;&nbsp;
-            <Link href="https://opensea.io/collection/valenftines">
-              <a className={styles.headerLink} target="_blank">
-                🚢 OPENSEA
-              </a>
-            </Link>
-          </div>
+          <Link href="https://twitter.com/valenftinesday" passHref>
+            <a className={styles.headerLink} target="_blank">
+              🐦 TWITTER
+            </a>
+          </Link>
+          &nbsp;&nbsp;
+          <Link href="https://opensea.io/collection/valenftines">
+            <a className={styles.headerLink} target="_blank">
+              🚢 OPENSEA
+            </a>
+          </Link>
+        </p>
+        <p>
           Valenftines are messages minted *from* one address *to* another address. Select your favorite hearts, add the
           address of your friend/lover, mint, and the NFT will appear in their wallet.
         </p>
