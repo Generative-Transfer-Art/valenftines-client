@@ -48,7 +48,7 @@ export default function ConnectorModal({ close }: ConnectorModalProps) {
             key={connector.id}
             disabled={!connector.ready}
           >
-            <div>{connector.name}</div>
+            <div>{connector instanceof InjectedConnector ? 'METAMASK' : connector.name}</div>
             <ConnectorImage connector={connector} />
           </button>
         ))}
