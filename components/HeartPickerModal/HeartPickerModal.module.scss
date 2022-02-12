@@ -1,12 +1,13 @@
 #content {
   padding: 0;
   justify-content: flex-start;
+  overflow-y: auto;
 
   @media (min-width: 768px) {
     border-radius: 0;
     box-shadow: var(--pink-shadow);
     max-height: 100vh;
-    overflow-y: auto;
+    max-width: 500px;
     overflow-x: hidden;
   }
 }
@@ -32,9 +33,7 @@
   width: 100%;
 
   @media (min-width: 768px) {
-    padding: 27px 50px 50px 50px;
-    min-width: 500px;
-    width: unset;
+    padding: 25px 30px 50px;
   }
 }
 
