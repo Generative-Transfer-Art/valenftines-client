@@ -49,7 +49,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     }
 
     return cost.toString()
-  }, [mintState, isEarlyMinter])
+  }, [mintState, isEarlyMinter, earlyMintLive])
 
   const contractAddress = useMemo(() => {
     if (!onSupportedNetwork) {
@@ -66,11 +66,10 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
   })
 
   const checkEarlyMinted = useCallback(async () => {
-    if (accountData == null || valeNFTinesContract == null || valeNFTinesContract.signer == null) {
-      return
+    if (accountData?.address && valeNFTinesContract && valeNFTinesContract.signer) {
+      const claimed = await valeNFTinesContract.gtapEarlyMintClaimed(accountData.address)
+      setHasEarlyMinted(claimed)
     }
-    const claimed = await valeNFTinesContract.gtapEarlyMintClaimed(accountData.address)
-    setHasEarlyMinted(claimed)
   }, [accountData, valeNFTinesContract])
 
   useEffect(() => {
@@ -143,8 +142,6 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
 
   const txConfirmedCallback = useCallback(
     (_from, _to, id) => {
-      console.log(id)
-      console.log('setting state')
       setValentineId(id.toString())
       setPageState(PAGE_STATE.COMPLETE)
     },
@@ -156,7 +153,6 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     if (!recipient) {
       return
     }
-    console.log('in hook')
     const filter = valeNFTinesContract.filters.Transfer(null, recipient)
     valeNFTinesContract.on(filter, txConfirmedCallback)
     return () => {

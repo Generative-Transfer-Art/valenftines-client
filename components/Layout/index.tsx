@@ -1,3 +1,4 @@
+import { providers } from 'ethers'
 import Head from 'next/head'
 import { PropsWithChildren } from 'react'
 import { chain, Provider } from 'wagmi'
@@ -43,6 +44,8 @@ const connectors = ({ chainId }: { chainId?: number | undefined }) => {
   ]
 }
 
+const provider = ({ chainId }: any) => new providers.AlchemyProvider(chainId, process.env.NEXT_PUBLIC_ALCHEMY_KEY)
+
 export default function Layout({ children, mainClass }: PropsWithChildren<LayoutProps>) {
   return (
     <>
@@ -51,7 +54,7 @@ export default function Layout({ children, mainClass }: PropsWithChildren<Layout
         <meta name="description" content="A transfer art project" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <Provider autoConnect connectors={connectors}>
+      <Provider autoConnect connectors={connectors} provider={provider}>
         <main className={`${styles.wrapper} ${mainClass}`}>{children}</main>
       </Provider>
     </>
