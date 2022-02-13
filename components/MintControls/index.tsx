@@ -7,7 +7,7 @@ import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { earlyMintProofForAddress, isEarlyMintEligble } from 'lib/earlyMint'
 import { mintCostETH } from 'lib/mintCost'
 import { isEarlyMintLive, isPublicMintLive } from 'lib/mintTiming'
-import { connectModalOpenAtom, mintAtom, PAGE_STATE } from 'pages'
+import { connectModalOpenAtom, INITIAL_MINT_STATE, mintAtom, PAGE_STATE } from 'pages'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ALL_SUPPORTED_CHAIN_IDS, SupportedChainId } from 'types'
 import { useAccount, useContract, useNetwork, useSigner } from 'wagmi'
@@ -21,6 +21,7 @@ interface MintControlsProps {
 }
 
 export default function MintControls({ pageState, setPageState }: MintControlsProps) {
+  const setMintState = useUpdateAtom(mintAtom)
   const setConnectModalOpen = useUpdateAtom(connectModalOpenAtom)
   const [hasEarlyMinted, setHasEarlyMinted] = useState<boolean>()
   const [{ data: accountData }] = useAccount({
@@ -104,8 +105,8 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     const { recipient, id1, id2, id3 } = mintState
     if (accountData?.address && network.chain?.id && recipient && id1 && id2 && id3 && valeNFTinesContract) {
       try {
-        setPageState(PAGE_STATE.PENDING)
         let transaction: ContractTransaction
+        setPageState(PAGE_STATE.CONFIRM_MINT_TRANSACTION)
         if (isEarlyMinter) {
           transaction = await valeNFTinesContract.gtapMint(
             recipient,
@@ -122,6 +123,9 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
             value: parseEther(mintEthPrice),
           })
         }
+
+        setPageState(PAGE_STATE.PENDING)
+
         setTxHash(transaction.hash)
         await transaction.wait()
         const filter = valeNFTinesContract.filters.Transfer(null, recipient)
@@ -129,7 +133,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
         setValentineId(log.args.id.toString())
         setPageState(PAGE_STATE.COMPLETE)
       } catch (error) {
-        setPageState(PAGE_STATE.COMPLETE)
+        setPageState(PAGE_STATE.ERROR)
         console.error(error)
       }
     }
@@ -137,9 +141,10 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
 
   const resetState = useCallback(() => {
     setPageState(PAGE_STATE.READY)
+    setMintState(INITIAL_MINT_STATE)
     setTxHash(null)
     setValentineId('')
-  }, [setPageState, setTxHash])
+  }, [setMintState, setPageState, setTxHash, setValentineId])
 
   const etherscanLink = useMemo(
     () => `https://${network.chain?.id === SupportedChainId.RINKEBY ? 'rinkeby.' : ''}etherscan.io/tx/${txHash}`,
@@ -161,6 +166,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
       return false
     }
     switch (pageState) {
+      case PAGE_STATE.CONFIRM_MINT_TRANSACTION:
       case PAGE_STATE.PENDING:
         return true
       case PAGE_STATE.ERROR:
@@ -176,10 +182,12 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
       return 'CONNECT WALLET'
     }
     switch (pageState) {
+      case PAGE_STATE.CONFIRM_MINT_TRANSACTION:
+        return 'CHECK WALLET'
       case PAGE_STATE.COMPLETE:
         return 'SEND ANOTHER'
       case PAGE_STATE.ERROR:
-        return 'RETRY'
+        return 'FAILED - RETRY?'
       case PAGE_STATE.PENDING:
         return 'PENDING...'
       case PAGE_STATE.READY:

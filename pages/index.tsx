@@ -13,6 +13,7 @@ export enum PAGE_STATE {
   READY,
   PENDING,
   COMPLETE,
+  CONFIRM_MINT_TRANSACTION,
 }
 
 export interface MintState {
@@ -23,13 +24,13 @@ export interface MintState {
 }
 
 export const connectModalOpenAtom = atom<boolean>(false)
-
-export const mintAtom = atom<MintState>({
+export const INITIAL_MINT_STATE = {
   recipient: '',
   id1: 0,
   id2: 0,
   id3: 0,
-})
+}
+export const mintAtom = atom<MintState>(INITIAL_MINT_STATE)
 
 export default function Mint() {
   const [addressGetterOpen, setAddressGetterOpen] = useState(false)

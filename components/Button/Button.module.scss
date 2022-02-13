@@ -16,8 +16,7 @@
   width: 320px;
   transition: all 200ms ease;
 
-  &:hover,
-  &:focus {
+  &:hover {
     background: #9c0059;
     border-radius: 16px;
     box-shadow: var(--pink-shadow);
