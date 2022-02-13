@@ -70,7 +70,6 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
       return
     }
     const claimed = await valeNFTinesContract.gtapEarlyMintClaimed(accountData.address)
-    console.log('valeNFTinesContract.gtapEarlyMintClaimed(accountData.address)', claimed)
     setHasEarlyMinted(claimed)
   }, [accountData, valeNFTinesContract])
 
@@ -123,21 +122,47 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
             value: parseEther(mintEthPrice),
           })
         }
-
         setPageState(PAGE_STATE.PENDING)
-
         setTxHash(transaction.hash)
-        await transaction.wait()
-        const filter = valeNFTinesContract.filters.Transfer(null, recipient)
-        const [log] = await valeNFTinesContract.queryFilter(filter, -1, 'latest')
-        setValentineId(log.args.id.toString())
-        setPageState(PAGE_STATE.COMPLETE)
       } catch (error) {
         setPageState(PAGE_STATE.ERROR)
         console.error(error)
       }
     }
-  }, [accountData, isEarlyMinter, mintEthPrice, mintState, network, readyToMint, setPageState, valeNFTinesContract])
+  }, [
+    accountData?.address,
+    earlyMintLive,
+    isEarlyMinter,
+    mintEthPrice,
+    mintState,
+    network.chain?.id,
+    readyToMint,
+    setPageState,
+    valeNFTinesContract,
+  ])
+
+  const txConfirmedCallback = useCallback(
+    (_from, _to, id) => {
+      console.log(id)
+      console.log('setting state')
+      setValentineId(id.toString())
+      setPageState(PAGE_STATE.COMPLETE)
+    },
+    [setPageState, setValentineId]
+  )
+
+  useEffect(() => {
+    const { recipient } = mintState
+    if (!recipient) {
+      return
+    }
+    console.log('in hook')
+    const filter = valeNFTinesContract.filters.Transfer(null, recipient)
+    valeNFTinesContract.on(filter, txConfirmedCallback)
+    return () => {
+      valeNFTinesContract.off(filter, txConfirmedCallback)
+    }
+  }, [mintState, pageState, setPageState, txConfirmedCallback, txHash, valeNFTinesContract])
 
   const resetState = useCallback(() => {
     setPageState(PAGE_STATE.READY)
