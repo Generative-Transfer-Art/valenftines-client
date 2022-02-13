@@ -58,8 +58,17 @@
 .pickerHeart {
   height: 146px;
   width: 136px;
+}
 
-  text {
-    font-weight: 500 !important;
+.selectMessageHeart {
+  path {
+    fill: transparent;
+    transition: 200ms ease fill;
+  }
+
+  &:hover {
+    path {
+      fill: var(--pink);
+    }
   }
 }

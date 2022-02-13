@@ -6,6 +6,31 @@
   animation: 1500ms ease-in-out infinite alternate float;
 }
 
+.heartHasAddress {
+  color: var(--black);
+
+  text {
+    fill: var(--black);
+  }
+
+  path {
+    fill: var(--white);
+    stroke: var(--black);
+    stroke-width: 5px;
+    transition: 200ms ease all;
+  }
+}
+
+.heartHasAddress.interactive:hover {
+  path {
+    stroke: var(--hot-pink);
+  }
+
+  text {
+    fill: var(--hot-pink);
+  }
+}
+
 @keyframes float {
   from {
     transform: translateY(0.2em);

@@ -34,12 +34,12 @@ function BaseHeart({
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"
-      viewBox="0 0 162 162"
+      viewBox="0 0 166 166"
       xmlSpace="preserve"
       className={classes.join(' ')}
       {...rest}
     >
-      <g transform="translate(81,81)">
+      <g transform="translate(83,83)">
         <path
           d="M79.2-43C71.2-78.4,30.8-84.9,5-60.9c-2.5,2.3-6.4,2.1-8.8-0.3c-25-25.9-75.1-15-76.7,28.2C-82.6,22.3-14,75.2,1.5,75.1C17.3,75.1,91.3,10.7,79.2-43z"
           fill={fill}
@@ -422,7 +422,12 @@ type AddressHeartProps = BaseHeartProps &
 
 export function AddressHeart({ address, classes = [], ...rest }: AddressHeartProps) {
   return (
-    <BaseHeart fill={theme.white} color={theme.hotPink} classes={classes} {...rest}>
+    <BaseHeart
+      fill={theme.white}
+      color={theme.hotPink}
+      classes={[address ? styles.heartHasAddress : '', rest.onClick ? styles.interactive : '', ...classes]}
+      {...rest}
+    >
       <OneLineText line1={address} />
     </BaseHeart>
   )

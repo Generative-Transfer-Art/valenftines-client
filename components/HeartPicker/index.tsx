@@ -51,7 +51,10 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
         </div>
         <div className={styles.sendToHeart}>
           {recipient == '' ? (
-            <Hearts.SendToHeart onClick={openAddressGetter} classes={pickerHeartClass} />
+            <Hearts.SendToHeart
+              onClick={openAddressGetter}
+              classes={pickerHeartClass.concat(styles.selectMessageHeart)}
+            />
           ) : (
             <Hearts.AddressHeart
               style={{ cursor: 'pointer' }}
@@ -64,21 +67,21 @@ export default function HeartPicker({ openAddressGetter }: { openAddressGetter: 
 
         <div className={styles.heart1} onClick={() => present(1)}>
           {heart1 == 0 ? (
-            <Hearts.SelectMessageHeart classes={pickerHeartClass} />
+            <Hearts.SelectMessageHeart classes={pickerHeartClass.concat(styles.selectMessageHeart)} />
           ) : (
             <Hearts.TextHeart heartType={heart1} classes={pickerHeartClass} />
           )}
         </div>
         <div className={styles.heart2} onClick={() => present(2)}>
           {heart2 == 0 ? (
-            <Hearts.SelectMessageHeart classes={pickerHeartClass} />
+            <Hearts.SelectMessageHeart classes={pickerHeartClass.concat(styles.selectMessageHeart)} />
           ) : (
             <Hearts.TextHeart heartType={heart2} classes={pickerHeartClass} />
           )}
         </div>
         <div className={styles.heart3} onClick={() => present(3)}>
           {heart3 == 0 ? (
-            <Hearts.SelectMessageHeart classes={pickerHeartClass} />
+            <Hearts.SelectMessageHeart classes={pickerHeartClass.concat(styles.selectMessageHeart)} />
           ) : (
             <Hearts.TextHeart heartType={heart3} classes={pickerHeartClass} />
           )}
