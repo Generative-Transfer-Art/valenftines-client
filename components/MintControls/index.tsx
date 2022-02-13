@@ -44,7 +44,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
     const { id1, id2, id3 } = mintState
     let cost = mintCostETH(id1) + mintCostETH(id2) + mintCostETH(id3)
 
-    if (isEarlyMinter) {
+    if (isEarlyMinter && isEarlyMintLive) {
       cost = (cost * 50) / 100
     }
 
