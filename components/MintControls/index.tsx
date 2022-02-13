@@ -107,7 +107,7 @@ export default function MintControls({ pageState, setPageState }: MintControlsPr
       try {
         let transaction: ContractTransaction
         setPageState(PAGE_STATE.CONFIRM_MINT_TRANSACTION)
-        if (isEarlyMinter) {
+        if (isEarlyMinter && earlyMintLive) {
           transaction = await valeNFTinesContract.gtapMint(
             recipient,
             id1,
